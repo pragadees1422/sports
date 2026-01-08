@@ -1,3456 +1,668 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TACSPORTS | Modern Sports Commerce</title>
-    <meta name="description" content="TACSPORTS - Premium modern sports commerce for cricket, football, fitness and more. Shop online or browse offline stores with live offers and dynamic filters." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-    <style>
-        :root {
-            --bg-main: #050713;
-            --bg-elevated: #0b0f24;
-            --bg-soft: rgba(15, 23, 42, 0.9);
-            --accent-primary: #00f5ff;
-            --accent-secondary: #ff3b8d;
-            --accent-amber: #f97316;
-            --accent-green: #22c55e;
-            --accent-red: #ef4444;
-            --text-main: #e5e7eb;
-            --text-muted: #9ca3af;
-            --border-subtle: rgba(148, 163, 184, 0.35);
-            --card-radius: 18px;
-            --transition-fast: 180ms ease-out;
-            --transition-med: 260ms ease;
-            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.85);
-            --shadow-neon: 0 0 25px rgba(56, 189, 248, 0.6);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html, body {
-            height: 100%;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            color: var(--text-main);
-            background: radial-gradient(circle at top left, #1d243b 0, #050713 38%, #020617 100%);
-            overflow-x: hidden;
-        }
-
-        /* Background animated gradient */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: -40%;
-            background:
-                radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.22), transparent 60%),
-                radial-gradient(circle at 80% 0%, rgba(236, 72, 153, 0.22), transparent 55%),
-                radial-gradient(circle at 50% 100%, rgba(249, 115, 22, 0.18), transparent 65%);
-            opacity: 0.65;
-            mix-blend-mode: screen;
-            filter: blur(2px);
-            z-index: -2;
-            animation: gradientMove 26s ease-in-out infinite alternate;
-        }
-
-        @keyframes gradientMove {
-            0% {
-                transform: translate3d(0, 0, 0) scale(1);
-            }
-            50% {
-                transform: translate3d(-4%, 4%, 0) scale(1.05);
-            }
-            100% {
-                transform: translate3d(4%, -4%, 0) scale(1.08);
-            }
-        }
-
-        /* Floating particles canvas */
-        #bg-particles {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        /* Layout */
-        .page-shell {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        main {
-            flex: 1;
-            width: 100%;
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 96px 16px 96px;
-        }
-
-        @media (min-width: 1024px) {
-            main {
-                padding: 110px 32px 110px;
-            }
-        }
-
-        /* Header / Top section */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(18px);
-            background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.86));
-            border-bottom: 1px solid rgba(148, 163, 184, 0.45);
-            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.85);
-            animation: headerSlideDown 520ms ease-out;
-        }
-
-        @keyframes headerSlideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .header-inner {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        @media (min-width: 1024px) {
-            .header-inner {
-                padding: 14px 32px;
-            }
-        }
-
-        .brand-mark {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #22c55e, #0ea5e9 55%, #1d243b 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.5), var(--shadow-neon);
-            overflow: hidden;
-        }
-
-        .logo-circle::before {
-            content: "";
-            position: absolute;
-            inset: 16%;
-            border-radius: 40% 70% 40% 80%;
-            border: 2px solid rgba(15, 23, 42, 0.4);
-        }
-
-        .logo-bat {
-            width: 17px;
-            height: 32px;
-            border-radius: 8px;
-            background: linear-gradient(145deg, #e5e7eb, #9ca3af);
-            box-shadow: 0 0 8px rgba(15, 23, 42, 0.8);
-            transform: rotate(-18deg) translateY(1px);
-            position: relative;
-        }
-
-        .logo-bat::before {
-            content: "";
-            position: absolute;
-            inset: 2px 3px;
-            border-radius: 7px;
-            border-left: 2px solid rgba(15, 23, 42, 0.18);
-            border-right: 2px solid rgba(15, 23, 42, 0.38);
-        }
-
-        .logo-bat::after {
-            content: "";
-            position: absolute;
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 10px;
-            border-radius: 9px;
-            background: linear-gradient(to bottom, #f97316, #b45309);
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-
-        .brand-name {
-            font-family: "Orbitron", system-ui;
-            font-size: 1.18rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #f9fafb;
-            text-shadow: 0 0 14px rgba(56, 189, 248, 0.9);
-        }
-
-        .brand-tagline {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.24em;
-            color: var(--text-muted);
-        }
-
-        .primary-nav {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-        }
-
-        .nav-links {
-            display: none;
-            gap: 8px;
-            margin-right: 6px;
-        }
-
-        @media (min-width: 768px) {
-            .nav-links {
-                display: flex;
-            }
-        }
-
-        .nav-btn {
-            position: relative;
-            border-radius: 999px;
-            padding: 8px 14px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            border: 1px solid rgba(148, 163, 184, 0.6);
-            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.92));
-            color: var(--text-main);
-            cursor: pointer;
-            overflow: hidden;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
-        }
-
-        .nav-btn span.icon {
-            font-size: 1.1rem;
-        }
-
-        .nav-btn::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(56, 189, 248, 0.36), transparent 56%);
-            opacity: 0;
-            transition: opacity var(--transition-fast), transform var(--transition-fast);
-            transform: scale(0.6);
-        }
-
-        .nav-btn:hover {
-            border-color: rgba(56, 189, 248, 0.9);
-            color: #e0f2fe;
-            transform: translateY(-1px);
-            box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
-        }
-
-        .nav-btn:hover::before {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.97) translateY(0);
-            box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-        }
-
-        /* Ripple effect base */
-        .btn-ripple {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-ripple span.ripple {
-            position: absolute;
-            border-radius: 999px;
-            transform: scale(0);
-            animation: ripple 500ms ease-out forwards;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.6), transparent 70%);
-            pointer-events: none;
-        }
-
-        @keyframes ripple {
-            to {
-                transform: scale(8);
-                opacity: 0;
-            }
-        }
-
-        /* Search + Cart */
-        .header-utilities {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .search-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .search-toggle {
-            width: 34px;
-            height: 34px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.66);
-            background: radial-gradient(circle at 30% 30%, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.96));
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: var(--transition-fast);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .search-toggle:hover {
-            color: #e0f2fe;
-            border-color: rgba(56, 189, 248, 0.85);
-            box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
-            transform: translateY(-0.5px);
-        }
-
-        .search-toggle svg {
-            width: 17px;
-            height: 17px;
-        }
-
-        .search-input-shell {
-            position: absolute;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%) scaleX(0.2);
-            transform-origin: 100% 50%;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity var(--transition-med), transform var(--transition-med);
-        }
-
-        .search-input-shell.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(-50%) scaleX(1);
-        }
-
-        .search-input {
-            min-width: 190px;
-            max-width: 260px;
-            padding: 7px 12px 7px 28px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92));
-            color: var(--text-main);
-            font-size: 0.8rem;
-            outline: none;
-            box-shadow: 0 14px 32px rgba(15, 23, 42, 0.85);
-        }
-
-        .search-input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .search-input-icon {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8rem;
-            color: var(--accent-primary);
-        }
-
-        .search-suggestions {
-            position: absolute;
-            top: calc(100% + 6px);
-            right: 0;
-            width: 100%;
-            max-width: 280px;
-            background: rgba(15, 23, 42, 0.98);
-            border-radius: 14px;
-            border: 1px solid rgba(148, 163, 184, 0.6);
-            box-shadow: 0 18px 42px rgba(15, 23, 42, 0.9);
-            font-size: 0.8rem;
-            display: none;
-            max-height: 260px;
-            overflow: auto;
-            z-index: 40;
-        }
-
-        .search-suggestions.visible {
-            display: block;
-        }
-
-        .search-suggestion-item {
-            padding: 8px 12px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(30, 64, 175, 0.35);
-        }
-
-        .search-suggestion-item:last-child {
-            border-bottom: none;
-        }
-
-        .search-suggestion-item span.label {
-            flex: 1;
-        }
-
-        .search-suggestion-item span.type {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent-primary);
-        }
-
-        .search-suggestion-item mark {
-            background: transparent;
-            color: var(--accent-secondary);
-        }
-
-        .search-suggestion-item:hover {
-            background: linear-gradient(90deg, rgba(15, 23, 42, 0.9), rgba(37, 99, 235, 0.65));
-        }
-
-        /* Cart */
-        .cart-button {
-            position: relative;
-            width: 36px;
-            height: 36px;
-            border-radius: 999px;
-            border: 1px solid rgba(248, 250, 252, 0.7);
-            background: radial-gradient(circle at 30% 30%, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--accent-primary);
-            box-shadow: 0 0 18px rgba(248, 250, 252, 0.25);
-            transition: var(--transition-fast);
-        }
-
-        .cart-button:hover {
-            transform: translateY(-0.5px);
-            box-shadow: 0 0 26px rgba(56, 189, 248, 0.75);
-        }
-
-        .cart-button svg {
-            width: 19px;
-            height: 19px;
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            min-width: 16px;
-            height: 16px;
-            border-radius: 999px;
-            background: linear-gradient(to bottom right, #22c55e, #0ea5e9);
-            color: #0b1120;
-            font-size: 0.64rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 14px rgba(34, 197, 94, 0.85);
-            transform-origin: center;
-        }
-
-        .cart-count.bump {
-            animation: cartBump 360ms ease-out;
-        }
-
-        @keyframes cartBump {
-            0% { transform: scale(1); }
-            30% { transform: scale(1.18); }
-            60% { transform: scale(0.96); }
-            100% { transform: scale(1); }
-        }
-
-        /* Hero + cricket center section */
-        .hero-shell {
-            display: grid;
-            grid-template-columns: minmax(0, 1.3fr);
-            gap: 22px;
-            margin-bottom: 32px;
-        }
-
-        @media (min-width: 900px) {
-            .hero-shell {
-                grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-                align-items: stretch;
-                gap: 24px;
-            }
-        }
-
-        .hero-main-card {
-            position: relative;
-            border-radius: 26px;
-            padding: 20px 18px 18px;
-            background:
-                linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.95)),
-                radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), transparent 60%);
-            border: 1px solid rgba(148, 163, 184, 0.4);
-            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
-            overflow: hidden;
-        }
-
-        .hero-main-card::before {
-            content: "CRICKET PRIME";
-            position: absolute;
-            right: -70px;
-            top: 10px;
-            font-family: "Orbitron", system-ui;
-            font-size: 0.7rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: rgba(148, 163, 184, 0.18);
-            transform: rotate(28deg);
-        }
-
-        .hero-topline {
-            display: flex;
-            justify-content: space-between;
-            gap: 6px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .hero-kicker {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.22em;
-            color: var(--accent-primary);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .hero-kicker-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 999px;
-            background: radial-gradient(circle, #22c55e, #22c55e 50%, transparent 68%);
-            box-shadow: 0 0 16px rgba(34, 197, 94, 0.9);
-        }
-
-        .hero-flash-sale {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: radial-gradient(circle at 0 0, rgba(248, 113, 113, 0.34), rgba(127, 29, 29, 0.9));
-            border: 1px solid rgba(248, 113, 113, 0.8);
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: #fee2e2;
-            box-shadow: 0 0 18px rgba(248, 113, 113, 0.75);
-        }
-
-        .hero-flash-sale span.badge {
-            background: linear-gradient(to right, #facc15, #f97316);
-            color: #0f172a;
-            padding: 2px 7px;
-            border-radius: 999px;
-            font-size: 0.65rem;
-            font-weight: 700;
-        }
-
-        .hero-heading {
-            margin-top: 8px;
-            margin-bottom: 12px;
-        }
-
-        .hero-heading h1 {
-            font-family: "Orbitron", system-ui;
-            font-size: clamp(1.8rem, 3vw, 2.3rem);
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: #f9fafb;
-            text-shadow: 0 0 22px rgba(56, 189, 248, 0.85);
-        }
-
-        .hero-heading p {
-            margin-top: 6px;
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            max-width: 540px;
-        }
-
-        .hero-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 12px;
-            margin-bottom: 14px;
-            font-size: 0.75rem;
-        }
-
-        .hero-meta-pill {
-            padding: 3px 9px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.6);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-muted);
-        }
-
-        .hero-meta-pill span.dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 999px;
-        }
-
-        .hero-meta-pill.online span.dot {
-            background: #22c55e;
-            box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
-        }
-
-        .hero-meta-pill.offline span.dot {
-            background: #38bdf8;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
-        }
-
-        .hero-meta-pill.pickup span.dot {
-            background: #facc15;
-            box-shadow: 0 0 12px rgba(250, 204, 21, 0.9);
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .btn-primary {
-            border-radius: 999px;
-            padding: 9px 18px;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            color: #0b1120;
-            background: linear-gradient(135deg, #22c55e, #0ea5e9);
-            box-shadow: 0 0 22px rgba(34, 197, 94, 0.9);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
-            transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.05);
-            box-shadow: 0 0 28px rgba(34, 197, 94, 1);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0) scale(0.97);
-            box-shadow: 0 0 16px rgba(34, 197, 94, 0.7);
-        }
-
-        .btn-ghost {
-            border-radius: 999px;
-            padding: 9px 15px;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            border: 1px solid rgba(148, 163, 184, 0.8);
-            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92));
-            color: var(--text-main);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition-fast);
-        }
-
-        .btn-ghost:hover {
-            border-color: rgba(56, 189, 248, 0.85);
-            color: #e0f2fe;
-            transform: translateY(-1px);
-            box-shadow: 0 0 18px rgba(56, 189, 248, 0.6);
-        }
-
-        .btn-ghost:active {
-            transform: scale(0.97) translateY(0);
-        }
-
-        /* Categories mega menu (desktop) */
-        .mega-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(12px);
-            min-width: 260px;
-            max-width: 520px;
-            padding: 12px 16px 14px;
-            border-radius: 18px;
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.98);
-            display: none;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-            font-size: 0.78rem;
-            z-index: 40;
-        }
-
-        .mega-menu.visible {
-            display: grid;
-        }
-
-        .mega-col-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            margin-bottom: 4px;
-        }
-
-        .mega-col-items {
-            font-size: 0.74rem;
-            color: var(--text-muted);
-        }
-
-        .mega-col-items span {
-            display: block;
-        }
-
-        .hero-subgrid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-            margin-top: 18px;
-        }
-
-        .hero-stat {
-            border-radius: 14px;
-            padding: 8px 8px;
-            background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.7), rgba(15, 23, 42, 0.96));
-            border: 1px solid rgba(129, 140, 248, 0.9);
-            box-shadow: 0 0 22px rgba(59, 130, 246, 0.7);
-        }
-
-        .hero-stat:nth-child(2) {
-            background: radial-gradient(circle at top, rgba(34, 197, 94, 0.7), rgba(15, 23, 42, 0.96));
-            border-color: rgba(74, 222, 128, 0.9);
-            box-shadow: 0 0 22px rgba(34, 197, 94, 0.7);
-        }
-
-        .hero-stat:nth-child(3) {
-            background: radial-gradient(circle at top, rgba(249, 115, 22, 0.7), rgba(15, 23, 42, 0.96));
-            border-color: rgba(248, 171, 96, 0.95);
-            box-shadow: 0 0 22px rgba(249, 115, 22, 0.7);
-        }
-
-        .hero-stat-label {
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: #e5e7eb;
-        }
-
-        .hero-stat-value {
-            margin-top: 3px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .hero-stat-sub {
-            margin-top: 3px;
-            font-size: 0.7rem;
-            color: #e5e7eb;
-        }
-
-        /* Cricket bats spotlight / middle section main */
-        .cricket-spotlight {
-            position: relative;
-            border-radius: 26px;
-            padding: 14px 14px 16px;
-            background:
-                radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.25), transparent 55%),
-                radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.3), transparent 55%),
-                linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.95));
-            border: 1px solid rgba(56, 189, 248, 0.7);
-            box-shadow: 0 26px 60px rgba(15, 23, 42, 0.95), 0 0 40px rgba(56, 189, 248, 0.4);
-            overflow: hidden;
-        }
-
-        .cricket-spotlight-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .cricket-spotlight-title {
-            font-family: "Orbitron", system-ui;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-        }
-
-        .cricket-spotlight-sub {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-
-        .badge-offline-availability {
-            font-size: 0.7rem;
-            padding: 4px 8px;
-            border-radius: 999px;
-            border: 1px solid rgba(34, 197, 94, 0.8);
-            background: radial-gradient(circle, rgba(21, 128, 61, 0.85), rgba(15, 23, 42, 0.9));
-            color: #bbf7d0;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .badge-offline-availability span.dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: #22c55e;
-            box-shadow: 0 0 18px rgba(34, 197, 94, 0.9);
-        }
-
-        .cricket-filter-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-            margin: 6px 0 10px;
-            font-size: 0.78rem;
-        }
-
-        .filter-group-label {
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            font-size: 0.68rem;
-            color: var(--text-muted);
-        }
-
-        .filter-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .filter-chip {
-            border-radius: 999px;
-            padding: 3px 9px;
-            border: 1px solid rgba(148, 163, 184, 0.8);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
-            font-size: 0.72rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--text-muted);
-            transition: var(--transition-fast);
-        }
-
-        .filter-chip.active {
-            border-color: rgba(56, 189, 248, 0.9);
-            background: radial-gradient(circle at 0 0, rgba(37, 99, 235, 0.96), rgba(15, 23, 42, 0.96));
-            color: #e0f2fe;
-            box-shadow: 0 0 14px rgba(59, 130, 246, 0.7);
-        }
-
-        .filter-chip span.dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: rgba(148, 163, 184, 0.7);
-        }
-
-        .filter-chip.active span.dot {
-            background: #22c55e;
-            box-shadow: 0 0 16px rgba(34, 197, 94, 0.9);
-        }
-
-        .cricket-bat-grid {
-            margin-top: 10px;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        @media (min-width: 640px) {
-            .cricket-bat-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .cricket-bat-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        .product-card {
-            position: relative;
-            border-radius: 18px;
-            padding: 10px 9px 10px;
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            box-shadow: 0 16px 32px rgba(15, 23, 42, 0.95);
-            overflow: hidden;
-            cursor: pointer;
-            transform-origin: center;
-            transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease, background 220ms ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            border-color: rgba(56, 189, 248, 0.95);
-            box-shadow: 0 24px 60px rgba(15, 23, 42, 1), 0 0 34px rgba(56, 189, 248, 0.7);
-            background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.16), rgba(15, 23, 42, 0.98));
-        }
-
-        .product-card::before {
-            content: "";
-            position: absolute;
-            inset: -40%;
-            background: radial-gradient(circle at 10% 0, rgba(56, 189, 248, 0.3), transparent 65%);
-            opacity: 0;
-            transition: opacity 220ms ease;
-        }
-
-        .product-card:hover::before {
-            opacity: 1;
-        }
-
-        .product-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 5px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .brand-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 2px 8px 2px 3px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-        }
-
-        .brand-logo {
-            width: 18px;
-            height: 18px;
-            border-radius: 999px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.6rem;
-            color: #020617;
-            font-weight: 700;
-        }
-
-        .brand-logo.gray {
-            background: linear-gradient(135deg, #e5e7eb, #94a3b8);
-        }
-
-        .brand-logo.blue {
-            background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
-        }
-
-        .brand-logo.green {
-            background: linear-gradient(135deg, #4ade80, #16a34a);
-        }
-
-        .brand-logo.red {
-            background: linear-gradient(135deg, #f97316, #b91c1c);
-        }
-
-        .badge-discount {
-            padding: 2px 7px;
-            border-radius: 999px;
-            border: 1px solid rgba(248, 250, 252, 0.7);
-            background: radial-gradient(circle at 0 0, rgba(8, 47, 73, 0.95), rgba(15, 23, 42, 0.96));
-            font-size: 0.65rem;
-            color: #e0f2fe;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .badge-discount span.percent {
-            color: #22c55e;
-            font-weight: 600;
-        }
-
-        .product-media {
-            position: relative;
-            margin: 4px auto;
-            height: 124px;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            perspective: 500px;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .product-img {
-            width: 100%;
-            max-width: 150px;
-            height: 90px;
-            border-radius: 14px;
-            object-fit: cover;
-            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.9);
-            transform-origin: center;
-            transform: translateY(0) scale(1);
-            transition: transform 220ms ease, box-shadow 220ms ease;
-        }
-
-        .bat-illustration {
-            position: relative;
-            width: 40px;
-            height: 110px;
-            border-radius: 18px 18px 6px 6px;
-            background: linear-gradient(150deg, #e5e7eb, #9ca3af);
-            transform-origin: bottom center;
-            transform: rotate3d(1, -0.5, 0, 19deg) translateY(3px);
-            box-shadow: 0 24px 40px rgba(15, 23, 42, 0.9);
-            transition: transform 260ms ease, box-shadow 260ms ease;
-        }
-
-        .product-card:hover .bat-illustration {
-            transform: rotate3d(1, -0.5, 0, 9deg) translateY(0);
-            box-shadow: 0 26px 52px rgba(34, 197, 94, 0.7);
-        }
-
-        .product-card:hover .product-img {
-            transform: translateY(-2px) scale(1.04);
-            box-shadow: 0 22px 40px rgba(56, 189, 248, 0.85);
-        }
-
-        .bat-illustration::before {
-            content: "";
-            position: absolute;
-            inset: 5px 5px 30px 5px;
-            border-radius: 14px;
-            border: 2px solid rgba(15, 23, 42, 0.16);
-        }
-
-        .bat-illustration::after {
-            content: "";
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 10px;
-            height: 20px;
-            border-radius: 999px;
-            background: linear-gradient(to bottom, #f97316, #b45309);
-            box-shadow: 0 6px 10px rgba(15, 23, 42, 0.85);
-        }
-
-        .bat-brand-stripe {
-            position: absolute;
-            inset: 24px 8px 46px;
-            border-radius: 8px;
-            background: linear-gradient(140deg, rgba(56, 189, 248, 0.9), rgba(37, 99, 235, 0.9));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.58rem;
-            letter-spacing: 0.13em;
-            text-transform: uppercase;
-            color: #0b1120;
-            font-weight: 700;
-            box-shadow: 0 0 16px rgba(56, 189, 248, 0.8);
-        }
-
-        .bat-brand-stripe.alt {
-            background: linear-gradient(140deg, #f97316, #e11d48);
-            box-shadow: 0 0 16px rgba(248, 113, 113, 0.8);
-        }
-
-        .bat-brand-stripe.gray {
-            background: linear-gradient(140deg, #374151, #9ca3af);
-            color: #f9fafb;
-        }
-
-        .bat-shadow-ring {
-            position: absolute;
-            bottom: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 68px;
-            height: 16px;
-            border-radius: 999px;
-            background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.9), transparent 65%);
-            opacity: 0.75;
-        }
-
-        .product-info {
-            position: relative;
-            z-index: 1;
-            margin-top: 4px;
-        }
-
-        .product-title {
-            font-size: 0.78rem;
-            font-weight: 500;
-            margin-bottom: 3px;
-        }
-
-        .product-subtitle {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .product-price-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 6px;
-            margin-bottom: 8px;
-            font-size: 0.76rem;
-        }
-
-        .product-price-main {
-            font-weight: 600;
-        }
-
-        .product-price-main span.currency {
-            color: var(--accent-primary);
-        }
-
-        .product-price-main span.amount {
-            font-size: 0.9rem;
-        }
-
-        .product-price-old {
-            font-size: 0.68rem;
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-
-        .product-meta-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.68rem;
-            color: var(--text-muted);
-        }
-
-        .availability-pill {
-            padding: 2px 7px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .availability-pill span.dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 999px;
-        }
-
-        .availability-pill.online span.dot {
-            background: #22c55e;
-        }
-
-        .availability-pill.offline span.dot {
-            background: #38bdf8;
-        }
-
-        .availability-pill.mixed span.dot {
-            background: linear-gradient(90deg, #22c55e, #38bdf8);
-        }
-
-        .quick-view-btn {
-            border-radius: 999px;
-            padding: 3px 9px;
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.13em;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            transition: var(--transition-fast);
-        }
-
-        .quick-view-btn:hover {
-            border-color: rgba(56, 189, 248, 0.9);
-            color: #e0f2fe;
-        }
-
-        .product-card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
-            margin-top: 6px;
-        }
-
-        .btn-add-cart {
-            flex: 1;
-            border-radius: 999px;
-            padding: 5px 8px;
-            border: none;
-            outline: none;
-            background: linear-gradient(135deg, #22c55e, #0ea5e9);
-            color: #020617;
-            font-size: 0.74rem;
-            text-transform: uppercase;
-            letter-spacing: 0.13em;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 18px rgba(34, 197, 94, 0.8);
-            transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
-        }
-
-        .btn-add-cart:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.05);
-            box-shadow: 0 0 24px rgba(34, 197, 94, 1);
-        }
-
-        .btn-add-cart:active {
-            transform: translateY(0) scale(0.97);
-            box-shadow: 0 0 16px rgba(34, 197, 94, 0.8);
-        }
-
-        .best-for-tag {
-            font-size: 0.64rem;
-            color: var(--text-muted);
-            text-align: right;
-        }
-
-        .best-for-tag span {
-            color: #facc15;
-        }
-
-        /* Cricket kits section */
-        .section-shell {
-            position: relative;
-            margin-top: 28px;
-        }
-
-        .section-shell + .section-shell {
-            margin-top: 34px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-
-        .section-title-block h2 {
-            font-size: 0.98rem;
-            font-family: "Orbitron", system-ui;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-        }
-
-        .section-title-block p {
-            margin-top: 3px;
-            font-size: 0.78rem;
-            color: var(--text-muted);
-        }
-
-        .section-cta {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: var(--accent-primary);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
-
-        .kits-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        @media (min-width: 768px) {
-            .kits-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-        }
-
-        @media (max-width: 640px) {
-            .kits-grid {
-                display: flex;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 4px;
-            }
-            .kit-card {
-                min-width: 70%;
-                scroll-snap-align: start;
-            }
-        }
-
-        .kit-card {
-            position: relative;
-            border-radius: 18px;
-            padding: 10px 9px 11px;
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            box-shadow: 0 16px 32px rgba(15, 23, 42, 0.95);
-            cursor: pointer;
-            overflow: hidden;
-            transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
-        }
-
-        .kit-card:hover {
-            transform: translateY(-5px) scale(1.01);
-            border-color: rgba(248, 250, 252, 0.9);
-            box-shadow: 0 22px 50px rgba(15, 23, 42, 0.98), 0 0 26px rgba(248, 250, 252, 0.7);
-        }
-
-        .kit-tag-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.68rem;
-            margin-bottom: 6px;
-        }
-
-        .kit-tag {
-            padding: 2px 7px;
-            border-radius: 999px;
-            border: 1px solid rgba(56, 189, 248, 0.9);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98), rgba(30, 64, 175, 1));
-            color: #e0f2fe;
-            text-transform: uppercase;
-            letter-spacing: 0.13em;
-        }
-
-        .compare-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-        }
-
-        .compare-toggle input {
-            width: 11px;
-            height: 11px;
-        }
-
-        .kit-media {
-            position: relative;
-            height: 96px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .kit-img {
-            width: 100%;
-            max-width: 150px;
-            height: 90px;
-            border-radius: 14px;
-            object-fit: cover;
-            box-shadow: 0 16px 32px rgba(15, 23, 42, 0.9);
-        }
-
-        .kit-title {
-            font-size: 0.76rem;
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
-
-        .kit-meta {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .kit-price-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            font-size: 0.74rem;
-        }
-
-        .kit-price-row span.currency {
-            color: var(--accent-primary);
-        }
-
-        .kit-price-old {
-            font-size: 0.68rem;
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-
-        /* Brands grid section */
-        .brands-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px;
-        }
-
-        @media (min-width: 640px) {
-            .brands-grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .brands-grid {
-                grid-template-columns: repeat(6, minmax(0, 1fr));
-            }
-        }
-
-        .brand-card {
-            position: relative;
-            border-radius: 16px;
-            padding: 10px 8px 9px;
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            box-shadow: 0 12px 23px rgba(15, 23, 42, 0.95);
-            cursor: pointer;
-            text-align: center;
-            transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
-            overflow: hidden;
-        }
-
-        .brand-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            border-color: rgba(56, 189, 248, 0.9);
-            box-shadow: 0 18px 32px rgba(15, 23, 42, 1), 0 0 20px rgba(56, 189, 248, 0.7);
-        }
-
-        .brand-card-img {
-            width: 100%;
-            height: 56px;
-            object-fit: contain;
-            margin: 0 auto 6px;
-            filter: drop-shadow(0 10px 22px rgba(15, 23, 42, 0.9));
-        }
-
-        .brand-card-logo {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin: 0 auto 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: #020617;
-        }
-
-        .brand-card-name {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-        }
-
-        .brand-card-sport {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        /* Offers / countdown */
-        .offers-banner {
-            border-radius: 20px;
-            padding: 12px 12px 13px;
-            background: radial-gradient(circle at 0 0, rgba(248, 250, 252, 0.2), rgba(15, 23, 42, 0.98));
-            border: 1px solid rgba(248, 250, 252, 0.85);
-            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.95);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .offers-main {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .offers-title {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-        }
-
-        .offers-sub {
-            font-size: 0.76rem;
-            color: var(--text-muted);
-            margin-top: 3px;
-        }
-
-        .countdown {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.74rem;
-        }
-
-        .countdown-label {
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-size: 0.68rem;
-        }
-
-        .countdown-box {
-            display: flex;
-            gap: 4px;
-        }
-
-        .countdown-unit {
-            min-width: 38px;
-            padding: 4px 5px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.8);
-            text-align: center;
-            font-size: 0.7rem;
-        }
-
-        .countdown-unit span.value {
-            display: block;
-            font-weight: 600;
-            font-size: 0.82rem;
-        }
-
-        .offers-coupon {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.72rem;
-        }
-
-        .coupon-pill {
-            padding: 4px 10px;
-            border-radius: 999px;
-            border: 1px dashed rgba(248, 250, 252, 0.8);
-            background: radial-gradient(circle at 0 0, rgba(51, 65, 85, 1), rgba(15, 23, 42, 0.96));
-            font-family: "Orbitron", system-ui;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-        }
-
-        .coupon-apply-btn {
-            border-radius: 999px;
-            padding: 6px 11px;
-            border: none;
-            outline: none;
-            background: linear-gradient(135deg, #f97316, #e11d48);
-            color: #f9fafb;
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            cursor: pointer;
-            box-shadow: 0 0 22px rgba(248, 113, 113, 0.9);
-        }
-
-        /* Slide-in cart panel */
-        .cart-panel-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.76);
-            display: none;
-            align-items: flex-start;
-            justify-content: flex-end;
-            z-index: 60;
-        }
-
-        .cart-panel-backdrop.visible {
-            display: flex;
-        }
-
-        .cart-panel {
-            width: 100%;
-            max-width: 360px;
-            height: 100%;
-            background: radial-gradient(circle at top, rgba(30, 64, 175, 0.85), rgba(15, 23, 42, 0.98));
-            box-shadow: -18px 0 40px rgba(15, 23, 42, 0.95);
-            padding: 16px 16px 90px;
-            transform: translateX(100%);
-            transition: transform 260ms ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-panel.visible {
-            transform: translateX(0);
-        }
-
-        .cart-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .cart-panel-header h3 {
-            font-family: "Orbitron", system-ui;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-        }
-
-        .cart-close-btn {
-            border-radius: 999px;
-            width: 26px;
-            height: 26px;
-            border: 1px solid rgba(248, 250, 252, 0.75);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.96));
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-main);
-        }
-
-        .cart-body {
-            flex: 1;
-            overflow: auto;
-            padding-right: 4px;
-        }
-
-        .cart-empty {
-            margin-top: 30px;
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            text-align: center;
-        }
-
-        .cart-item {
-            border-radius: 14px;
-            padding: 8px 8px 9px;
-            background: rgba(15, 23, 42, 0.98);
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 8px;
-            align-items: center;
-            font-size: 0.74rem;
-            margin-bottom: 8px;
-        }
-
-        .cart-item-media {
-            width: 40px;
-            height: 60px;
-            border-radius: 10px;
-            background: linear-gradient(150deg, #e5e7eb, #9ca3af);
-            position: relative;
-        }
-
-        .cart-item-media::before {
-            content: "";
-            position: absolute;
-            inset: 4px;
-            border-radius: 8px;
-            border: 2px solid rgba(15, 23, 42, 0.16);
-        }
-
-        .cart-item-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .cart-item-title {
-            font-size: 0.76rem;
-        }
-
-        .cart-item-meta {
-            font-size: 0.68rem;
-            color: var(--text-muted);
-        }
-
-        .cart-item-remove {
-            font-size: 0.66rem;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            color: var(--accent-red);
-            cursor: pointer;
-            margin-top: 3px;
-        }
-
-        .cart-item-qty {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 4px;
-        }
-
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .qty-btn {
-            width: 18px;
-            height: 18px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.75);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            cursor: pointer;
-        }
-
-        .qty-display {
-            min-width: 20px;
-            text-align: center;
-            font-size: 0.7rem;
-        }
-
-        .cart-item-price {
-            font-size: 0.76rem;
-        }
-
-        .cart-footer {
-            padding-top: 10px;
-            border-top: 1px solid rgba(148, 163, 184, 0.6);
-            margin-top: 4px;
-        }
-
-        .cart-summary-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.78rem;
-            margin-bottom: 4px;
-        }
-
-        .cart-summary-row strong {
-            font-weight: 600;
-        }
-
-        .cart-checkout-btn {
-            width: 100%;
-            border-radius: 999px;
-            padding: 8px 12px;
-            border: none;
-            outline: none;
-            background: linear-gradient(135deg, #22c55e, #0ea5e9);
-            color: #020617;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            cursor: pointer;
-            box-shadow: 0 0 24px rgba(34, 197, 94, 0.9);
-        }
-
-        /* Quick view modal */
-        .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.78);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 70;
-        }
-
-        .modal-backdrop.visible {
-            display: flex;
-        }
-
-        .modal {
-            width: 100%;
-            max-width: 420px;
-            border-radius: 22px;
-            padding: 16px 16px 14px;
-            background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.4), rgba(15, 23, 42, 0.98));
-            border: 1px solid rgba(248, 250, 252, 0.85);
-            box-shadow: 0 26px 60px rgba(15, 23, 42, 1);
-            transform: translateY(18px) scale(0.96);
-            opacity: 0;
-            transition: transform 220ms ease, opacity 220ms ease;
-        }
-
-        .modal.visible {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .modal-title {
-            font-family: "Orbitron", system-ui;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-        }
-
-        .modal-close-btn {
-            border-radius: 999px;
-            width: 26px;
-            height: 26px;
-            border: 1px solid rgba(248, 250, 252, 0.75);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.96));
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-main);
-        }
-
-        .modal-body {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 12px;
-            font-size: 0.78rem;
-        }
-
-        .modal-bat {
-            width: 56px;
-            height: 150px;
-            border-radius: 20px 20px 7px 7px;
-            background: linear-gradient(150deg, #e5e7eb, #9ca3af);
-            position: relative;
-            margin: 0 auto;
-            box-shadow: 0 30px 44px rgba(15, 23, 42, 0.95);
-        }
-
-        .modal-bat::before {
-            content: "";
-            position: absolute;
-            inset: 6px 8px 40px;
-            border-radius: 16px;
-            border: 3px solid rgba(15, 23, 42, 0.18);
-        }
-
-        .modal-bat::after {
-            content: "";
-            position: absolute;
-            bottom: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 16px;
-            height: 26px;
-            border-radius: 999px;
-            background: linear-gradient(to bottom, #f97316, #b45309);
-        }
-
-        .modal-badge-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 6px;
-        }
-
-        .modal-desc {
-            font-size: 0.76rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .modal-infos {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-
-        .modal-info-pill {
-            border-radius: 999px;
-            padding: 3px 7px;
-            border: 1px solid rgba(148, 163, 184, 0.8);
-            font-size: 0.68rem;
-        }
-
-        .modal-price {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-        }
-
-        .modal-footer-actions {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        /* Bottom mobile navigation / contact bar */
-        .bottom-bar {
-            position: fixed;
-            inset-inline: 0;
-            bottom: 0;
-            z-index: 55;
-            padding: 8px 12px 10px;
-            backdrop-filter: blur(18px);
-            background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.96));
-            border-top: 1px solid rgba(148, 163, 184, 0.5);
-            display: grid;
-            grid-template-columns: 1.4fr 2fr;
-            gap: 10px;
-            align-items: center;
-        }
-
-        @media (min-width: 768px) {
-            .bottom-bar {
-                max-width: 480px;
-                margin: 0 auto;
-                left: 0;
-                right: 0;
-                border-radius: 14px 14px 0 0;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .bottom-bar {
-                position: static;
-                max-width: none;
-                margin-top: 20px;
-                border-radius: 18px;
-                grid-template-columns: 1.6fr 2fr;
-                padding-inline: 24px;
-            }
-        }
-
-        .bottom-contact {
-            font-size: 0.74rem;
-        }
-
-        .bottom-contact-label {
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            font-size: 0.66rem;
-            color: var(--text-muted);
-        }
-
-        .bottom-contact-number {
-            margin-top: 3px;
-            font-family: "Orbitron", system-ui;
-            letter-spacing: 0.14em;
-        }
-
-        .bottom-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-
-        .contact-icon-btn {
-            flex: 1;
-            border-radius: 999px;
-            padding: 7px 9px;
-            border: 1px solid rgba(148, 163, 184, 0.8);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 0.74rem;
-            cursor: pointer;
-            color: var(--text-main);
-        }
-
-        .contact-icon-btn.whatsapp {
-            border-color: rgba(34, 197, 94, 0.9);
-            color: #bbf7d0;
-        }
-
-        .contact-icon-btn.call {
-            border-color: rgba(56, 189, 248, 0.9);
-            color: #bae6fd;
-        }
-
-        .contact-icon {
-            font-size: 1rem;
-        }
-
-        .contact-icon-btn.whatsapp .contact-icon,
-        .contact-icon-btn.call .contact-icon {
-            animation: pulseIcon 1.8s infinite ease-in-out;
-        }
-
-        @keyframes pulseIcon {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.9;
-            }
-            50% {
-                transform: scale(1.15);
-                opacity: 1;
-            }
-        }
-
-        /* Footer */
-        footer {
-            width: 100%;
-            border-top: 1px solid rgba(51, 65, 85, 0.9);
-            background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
-        }
-
-        .footer-inner {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 14px 16px 80px;
-            display: grid;
-            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
-            gap: 16px;
-            font-size: 0.74rem;
-        }
-
-        @media (min-width: 768px) {
-            .footer-inner {
-                grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
-                padding: 20px 32px 26px;
-            }
-        }
-
-        .footer-title {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            margin-bottom: 6px;
-        }
-
-        .footer-copy {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-
-        .social-row {
-            margin-top: 10px;
-            display: flex;
-            gap: 8px;
-        }
-
-        .social-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.85);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
-        }
-
-        .social-icon:hover {
-            transform: translateY(-2px);
-            border-color: rgba(56, 189, 248, 0.9);
-            box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
-        }
-
-        .newsletter-form {
-            display: flex;
-            gap: 6px;
-            margin-top: 6px;
-        }
-
-        .newsletter-input {
-            flex: 1;
-            border-radius: 999px;
-            padding: 6px 10px;
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
-            color: var(--text-main);
-            font-size: 0.74rem;
-            outline: none;
-        }
-
-        .newsletter-btn {
-            border-radius: 999px;
-            padding: 6px 10px;
-            border: none;
-            outline: none;
-            background: linear-gradient(135deg, #22c55e, #0ea5e9);
-            color: #020617;
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            cursor: pointer;
-        }
-
-        /* Fade-in on scroll */
-        .fade-section {
-            opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 420ms ease, transform 420ms ease;
-        }
-
-        .fade-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Utility classes */
-        .badge-inline {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 6px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            font-size: 0.68rem;
-        }
-
-        .highlight {
-            color: var(--accent-secondary);
-        }
-
-        /* Responsive tweaks */
-        @media (max-width: 480px) {
-            .hero-subgrid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-            .countdown {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> tacsportsStore</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #121824;
+      --card: #161d2a;
+      --text: #e9f0ff;
+      --muted: #9fb3d1;
+      --accent: #34d399;   /* neon green */
+      --accent-2: #22d3ee; /* electric blue */
+      --accent-3: #ef4444; /* red */
+      --accent-4: #f97316; /* orange */
+      --glow: 0 10px 30px rgba(52, 211, 153, 0.35);
+      --radius: 14px;
+      --fast: 180ms;
+      --mid: 320ms;
+      --grad: linear-gradient(135deg, #0f172a 0%, #0b1220 50%, #0f172a 100%);
+      --grid-max: 1200px;
+      --nav-h: 72px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font: inherit; cursor: pointer; }
+
+    /* Layout */
+    header {
+      position: sticky;
+      top: 0; z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(11, 15, 20, 0.8);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav {
+      max-width: var(--grid-max);
+      margin: 0 auto;
+      padding: 0 18px;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; letter-spacing: 0.5px; font-size: 1.1rem;
+      text-transform: uppercase;
+    }
+    .logo-dot {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: radial-gradient(circle at 30% 30%, #fff, #34d399 40%, #0b0f14 75%);
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.5);
+      transform: skew(-6deg);
+    }
+    .menu {
+      display: flex; gap: 16px; margin-left: 10px;
+      font-weight: 600; color: var(--muted);
+    }
+    .menu a { padding: 10px 12px; border-radius: 10px; transition: color var(--fast), background var(--fast); }
+    .menu a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+    .search {
+      margin-left: auto;
+      position: relative;
+      flex: 1; max-width: 320px;
+    }
+    .search input {
+      width: 100%; background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+      color: var(--text); padding: 12px 44px 12px 14px; border-radius: 12px;
+      outline: none; transition: border var(--fast), box-shadow var(--fast);
+    }
+    .search input:focus { border-color: var(--accent); box-shadow: var(--glow); }
+    .search span { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    .cart-btn {
+      position: relative; margin-left: 14px;
+      background: var(--accent-2);
+      color: #04101f;
+      border: none; padding: 12px 14px; border-radius: 12px;
+      font-weight: 800; letter-spacing: 0.3px;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 20px rgba(34, 211, 238, 0.35);
+      transition: transform var(--fast), box-shadow var(--fast);
+    }
+    .cart-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(34, 211, 238, 0.45); }
+    .cart-count {
+      position: absolute; top: -6px; right: -6px;
+      background: var(--accent-3); color: #fff; border-radius: 50%;
+      width: 22px; height: 22px; display: grid; place-items: center;
+      font-size: 12px; font-weight: 800; box-shadow: 0 0 0 3px var(--bg);
+      animation: pulse 1.2s infinite;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 72px 18px 36px;
+      overflow: hidden;
+      background: radial-gradient(circle at 30% 20%, rgba(52,211,153,0.08), transparent 38%), var(--grad);
+    }
+    .hero::before, .hero::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(135deg, rgba(255,255,255,0.02) 0 12px, transparent 12px 24px);
+      opacity: 0.35; transform: translateX(-8%);
+    }
+    .hero::after {
+      background: radial-gradient(circle at 80% 10%, rgba(34,211,238,0.18), transparent 35%);
+      opacity: 1; mix-blend-mode: screen; transform: translateX(10%) translateY(-6%);
+    }
+    .hero-grid {
+      max-width: var(--grid-max);
+      margin: 0 auto;
+      display: grid; gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: center;
+    }
+    .hero-copy h1 {
+      font-size: clamp(2.1rem, 4vw, 3rem);
+      line-height: 1.05;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(52, 211, 153, 0.12); color: var(--accent);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 8px 12px; border-radius: 999px; font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .hero-copy p { color: var(--muted); max-width: 520px; margin: 0 0 18px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      padding: 13px 18px; border-radius: 12px; border: none;
+      font-weight: 800; letter-spacing: 0.3px;
+      transition: transform var(--fast), box-shadow var(--fast), background var(--fast);
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent) 0%, #16a34a 100%); color: #04160f; box-shadow: var(--glow); }
+    .btn-primary:hover { transform: translateY(-1px) scale(1.01); }
+    .btn-ghost { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid rgba(255,255,255,0.08); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+    .hero-visual {
+      position: relative; min-height: 280px; display: grid; place-items: center;
+    }
+    .hero-card {
+      background: linear-gradient(145deg, #0f1624, #0b0f14);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; padding: 22px;
+      width: min(420px, 100%);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.45);
+      position: relative; overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-card::before {
+      content: ""; position: absolute; inset: -40% 10% auto;
+      height: 120%; background: linear-gradient(120deg, rgba(52,211,153,0.4), transparent 35%, rgba(34,211,238,0.25));
+      filter: blur(60px); opacity: 0.7; transform: rotate(-8deg);
+    }
+    .hero-prod {
+      position: relative; z-index: 1;
+      display: grid; gap: 10px;
+    }
+    .hero-prod img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); }
+    .hero-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .pill { padding: 6px 10px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; }
+    .pill.green { background: rgba(52,211,153,0.16); color: var(--accent); }
+    .pill.blue { background: rgba(34,211,238,0.16); color: var(--accent-2); }
+    .meta-title { font-weight: 800; letter-spacing: 0.4px; }
+
+    /* Sections */
+    section { padding: 54px 18px; }
+    .section-head { max-width: var(--grid-max); margin: 0 auto 20px; display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+    .section-head h2 { margin: 0; font-size: 1.6rem; letter-spacing: 0.5px; text-transform: uppercase; }
+    .tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+    .tab {
+      padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04); color: var(--muted); font-weight: 700;
+      transition: background var(--fast), color var(--fast), border var(--fast);
+    }
+    .tab.active { background: rgba(52,211,153,0.18); color: var(--accent); border-color: rgba(52,211,153,0.4); }
+
+    .grid {
+      max-width: var(--grid-max);
+      margin: 0 auto;
+      display: grid; gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--mid) ease, box-shadow var(--mid) ease, border var(--fast);
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.5); border-color: rgba(52,211,153,0.3); }
+    .card-img {
+      position: relative; overflow: hidden; border-radius: 12px; background: #0f172a;
+    }
+    .card-img img { width: 100%; height: 180px; object-fit: cover; transition: transform var(--mid) ease; }
+    .card:hover img { transform: scale(1.05); }
+    .discount {
+      position: absolute; top: 10px; left: 10px; background: var(--accent-3);
+      color: #fff; padding: 6px 10px; border-radius: 999px; font-weight: 800; font-size: 0.85rem;
+      box-shadow: 0 10px 20px rgba(239, 68, 68, 0.35);
+    }
+    .card-body { display: grid; gap: 8px; padding-top: 10px; }
+    .brand-tag { color: var(--accent-2); font-weight: 800; letter-spacing: 0.5px; font-size: 0.9rem; }
+    .title { font-weight: 800; margin: 0; }
+    .price-row { display: flex; align-items: center; gap: 10px; }
+    .price { font-weight: 900; font-size: 1.1rem; }
+    .old { color: var(--muted); text-decoration: line-through; font-size: 0.9rem; }
+    .add-btn {
+      background: linear-gradient(135deg, var(--accent-2), #0ea5e9);
+      color: #04101f; border: none; padding: 11px 12px; border-radius: 10px;
+      font-weight: 800; letter-spacing: 0.2px; width: 100%;
+      display: flex; justify-content: center; align-items: center; gap: 8px;
+      transition: transform var(--fast), box-shadow var(--fast);
+    }
+    .add-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(14,165,233,0.35); }
+
+    /* Brand strip */
+    .brands {
+      max-width: var(--grid-max);
+      margin: 0 auto;
+      display: grid; gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+    .brand-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      color: var(--muted); font-weight: 800; text-transform: uppercase;
+      transition: transform var(--mid), border var(--fast), box-shadow var(--fast);
+    }
+    .brand-card:hover { transform: translateY(-4px) scale(1.02); border-color: rgba(52,211,153,0.4); box-shadow: 0 12px 28px rgba(0,0,0,0.4); }
+
+    /* Offers */
+    .offers-grid {
+      max-width: var(--grid-max);
+      margin: 0 auto;
+      display: grid; gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .offer {
+      background: linear-gradient(135deg, rgba(52,211,153,0.12), rgba(34,211,238,0.1));
+      border: 1px solid rgba(52,211,153,0.2);
+      border-radius: 14px; padding: 18px;
+      position: relative; overflow: hidden;
+    }
+    .offer h3 { margin: 0 0 8px; }
+    .timer { display: flex; gap: 8px; flex-wrap: wrap; }
+    .time-chip { background: rgba(6, 243, 231, 0.35); padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); font-weight: 800; }
+
+    /* Bottom nav (mobile) */
+    .bottom-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(16, 18, 19, 0.92); backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      height: 62px; z-index: 30;
+    }
+    .bottom-item {
+      display: grid; place-items: center; color: var(--muted); font-weight: 700; font-size: 0.9rem;
+    }
+    .bottom-item.active { color: var(--accent); }
+
+    /* Cart panel */
+    .cart-panel {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: min(380px, 86vw);
+      background: rgba(11, 15, 20, 0.96);
+      border-left: 1px solid rgba(255,255,255,0.08);
+      box-shadow: -20px 0 60px rgba(0,0,0,0.55);
+      transform: translateX(110%);
+      transition: transform var(--mid) ease;
+      z-index: 40;
+      display: flex; flex-direction: column;
+    }
+    .cart-panel.open { transform: translateX(0); }
+    .cart-header { padding: 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .cart-items { flex: 1; overflow-y: auto; padding: 14px 18px; display: grid; gap: 12px; }
+    .cart-item { display: grid; grid-template-columns: 60px 1fr auto; gap: 12px; align-items: center; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+    .cart-footer { padding: 16px 18px; border-top: 1px solid rgba(255,255,255,0.08); display: grid; gap: 10px; }
+    .total-row { display: flex; justify-content: space-between; font-weight: 800; }
+    .checkout-btn { background: linear-gradient(135deg, var(--accent), #16a34a); color: #04160f; border: none; padding: 14px; border-radius: 12px; font-weight: 900; letter-spacing: 0.5px; box-shadow: var(--glow); }
+
+    /* Animations */
+    @keyframes pulse { 0%,100%{ transform: scale(1);} 50%{ transform: scale(1.08);} }
+    [data-anim] { opacity: 0; transform: translateY(18px); transition: opacity var(--mid) ease, transform var(--mid) ease; }
+    [data-anim].visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive tweaks */
+    @media (max-width: 900px) {
+      .menu { display: none; }
+      .search { max-width: 100%; }
+    }
+    @media (max-width: 640px) {
+      body { padding-bottom: 62px; }
+      .hero { padding-top: 56px; }
+      .hero-card { width: 100%; }
+      .card-img img { height: 150px; }
+      .nav { gap: 10px; }
+      .search input { padding: 11px 40px 11px 12px; }
+    }
+  </style>
 </head>
 <body>
-<canvas id="bg-particles"></canvas>
-<div class="page-shell">
-    <header>
-        <div class="header-inner">
-            <div class="brand-mark">
-                <div class="logo-circle">
-                    <div class="logo-bat" aria-hidden="true"></div>
-                </div>
-                <div class="brand-text">
-                    <div class="brand-name">TACSPORTS</div>
-                    <div class="brand-tagline">CRICKET · MULTI-SPORT COMMERCE</div>
-                </div>
-            </div>
-            <nav class="primary-nav" aria-label="Main navigation">
-                <div class="nav-links">
-                    <button class="nav-btn btn-ripple" data-nav-target="home">
-                        <span class="icon">🏠</span>
-                        <span>Home</span>
-                    </button>
-                    <button class="nav-btn btn-ripple" data-nav-target="products">
-                        <span class="icon">🏏</span>
-                        <span>Products</span>
-                    </button>
-                    <button class="nav-btn btn-ripple" data-nav-target="brands">
-                        <span class="icon">🏆</span>
-                        <span>Brands</span>
-                    </button>
-                    <button class="nav-btn btn-ripple" data-nav-target="categories">
-                        <span class="icon">🎯</span>
-                        <span>Categories</span>
-                    </button>
-                </div>
-                <div id="categories-mega" class="mega-menu" aria-label="Sport categories">
-                    <div>
-                        <div class="mega-col-title">Cricket</div>
-                        <div class="mega-col-items">
-                            <span>Bats · English willow</span>
-                            <span>Full cricket kits</span>
-                            <span>Protection &amp; helmets</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="mega-col-title">Football &amp; Fitness</div>
-                        <div class="mega-col-items">
-                            <span>Studs &amp; turf shoes</span>
-                            <span>Training apparel</span>
-                            <span>Recovery &amp; accessories</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="mega-col-title">Racquet Sports</div>
-                        <div class="mega-col-items">
-                            <span>Badminton racquets</span>
-                            <span>Strings &amp; grips</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="mega-col-title">More sports</div>
-                        <div class="mega-col-items">
-                            <span>Running &amp; training</span>
-                            <span>Indoor &amp; court</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-utilities">
-                    <div class="search-wrapper">
-                        <button class="search-toggle btn-ripple" aria-label="Search products">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.5"></circle>
-                                <line x1="15.5" y1="15.5" x2="20" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></line>
-                            </svg>
-                        </button>
-                        <div class="search-input-shell" id="search-shell">
-                            <span class="search-input-icon">⌕</span>
-                            <input id="search-input" class="search-input" type="search" placeholder="Search brand, bat, kit, sport..." autocomplete="off" />
-                            <div id="search-suggestions" class="search-suggestions" aria-label="Search suggestions"></div>
-                        </div>
-                    </div>
-                    <button class="cart-button btn-ripple" id="cart-toggle" aria-label="Open cart">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M3 4h2l2 12h10l2-8H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <circle cx="10" cy="19" r="1" fill="currentColor"></circle>
-                            <circle cx="17" cy="19" r="1" fill="currentColor"></circle>
-                        </svg>
-                        <span class="cart-count" id="cart-count">0</span>
-                    </button>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <main>
-        <!-- Hero + Cricket Bats Center Section -->
-        <section id="home" class="hero-shell fade-section">
-            <div class="hero-main-card">
-                <div class="hero-topline">
-                    <div class="hero-kicker">
-                        <span class="hero-kicker-dot"></span>
-                        TACSPORTS PRIME SERIES
-                    </div>
-                    <div class="hero-flash-sale" aria-label="Flash sale countdown">
-                        <span class="badge">-35% BATS</span>
-                        <span>Flash sale ends in</span>
-                        <span id="flash-timer">03:14:21</span>
-                    </div>
-                </div>
-                <div class="hero-heading">
-                    <h1>Cricket bats in the spotlight.</h1>
-                    <p>
-                        Curated pro-grade blades from world-leading brands. Shop online, reserve for in-store pickup,
-                        or explore exclusive offline-only offers at TACSPORTS experience centers.
-                    </p>
-                </div>
-                <div class="hero-meta">
-                    <span class="hero-meta-pill online">
-                        <span class="dot"></span>
-                        Online Exclusive Models
-                    </span>
-                    <span class="hero-meta-pill offline">
-                        <span class="dot"></span>
-                        20+ Offline Experience Stores
-                    </span>
-                    <span class="hero-meta-pill pickup">
-                        <span class="dot"></span>
-                        2 Hour Store Pickup
-                    </span>
-                </div>
-                <div class="hero-actions">
-                    <button class="btn-primary btn-ripple" data-nav-target="products">
-                        <span>Shop Cricket</span>
-                        <span>→</span>
-                    </button>
-                    <button class="btn-ghost btn-ripple" data-nav-target="offline">
-                        <span>Offline Stores</span>
-                    </button>
-                </div>
-                <div class="hero-subgrid" aria-label="Hero statistics">
-                    <div class="hero-stat">
-                        <div class="hero-stat-label">All Sports Brands</div>
-                        <div class="hero-stat-value">40+ global labels</div>
-                        <div class="hero-stat-sub">Cricket · Football · Fitness · More</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-label">Bat Specialists</div>
-                        <div class="hero-stat-value">Pro curated blades</div>
-                        <div class="hero-stat-sub">Hand-picked weights &amp; profiles</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-label">Offers Engine</div>
-                        <div class="hero-stat-value">Dynamic combos</div>
-                        <div class="hero-stat-sub">Smart kit + bat savings</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Center cricket bats spotlight -->
-            <aside id="products" class="cricket-spotlight" aria-label="Featured cricket bats">
-                <div class="cricket-spotlight-header">
-                    <div>
-                        <div class="cricket-spotlight-title">Cricket bat brands · Center stage</div>
-                        <div class="cricket-spotlight-sub">Filter by brand, price or bat weight</div>
-                    </div>
-                    <div class="badge-offline-availability">
-                        <span class="dot"></span>
-                        Offline pick-up ready
-                    </div>
-                </div>
-                <div class="cricket-filter-row">
-                    <span class="filter-group-label">Brand</span>
-                    <div class="filter-chips" id="brand-filters">
-                        <button class="filter-chip active" data-filter-brand="all">
-                            <span class="dot"></span>All
-                        </button>
-                        <button class="filter-chip" data-filter-brand="SS">
-                            <span class="dot"></span>SS
-                        </button>
-                        <button class="filter-chip" data-filter-brand="MRF">
-                            <span class="dot"></span>MRF
-                        </button>
-                        <button class="filter-chip" data-filter-brand="Kookaburra">
-                            <span class="dot"></span>Kookaburra
-                        </button>
-                        <button class="filter-chip" data-filter-brand="SG">
-                            <span class="dot"></span>SG
-                        </button>
-                    </div>
-                </div>
-                <div class="cricket-filter-row">
-                    <span class="filter-group-label">Price &amp; Weight</span>
-                    <div class="filter-chips" id="misc-filters">
-                        <button class="filter-chip active" data-filter-range="all">
-                            <span class="dot"></span>Any
-                        </button>
-                        <button class="filter-chip" data-filter-range="budget">
-                            <span class="dot"></span>Budget
-                        </button>
-                        <button class="filter-chip" data-filter-range="pro">
-                            <span class="dot"></span>Pro grade
-                        </button>
-                        <button class="filter-chip" data-filter-weight="light">
-                            <span class="dot"></span>Lightweight
-                        </button>
-                        <button class="filter-chip" data-filter-weight="balanced">
-                            <span class="dot"></span>Balanced
-                        </button>
-                    </div>
-                </div>
-                <div class="cricket-bat-grid" id="cricket-grid">
-                    <!-- Dynamic bat cards injected via JS -->
-                </div>
-            </aside>
-        </section>
-
-        <!-- Cricket Kits Section -->
-        <section id="kits" class="section-shell fade-section">
-            <div class="section-header">
-                <div class="section-title-block">
-                    <h2>Cricket Kits</h2>
-                    <p>Complete pro kits with bats, pads, gloves &amp; bags. Compare before you commit.</p>
-                </div>
-                <button class="section-cta btn-ripple" data-nav-target="kits-compare">
-                    <span>Compare kits</span>
-                    <span>⇄</span>
-                </button>
-            </div>
-            <div class="kits-grid" id="kits-grid">
-                <!-- Kits populated via JavaScript -->
-            </div>
-        </section>
-
-        <!-- Brands section / all sports brands -->
-        <section id="brands" class="section-shell fade-section">
-            <div class="section-header">
-                <div class="section-title-block">
-                    <h2>All sports brands</h2>
-                    <p>Tap a brand to instantly load TACSPORTS products from that label.</p>
-                </div>
-                <span class="badge-inline">
-                    <span style="width:6px;height:6px;border-radius:999px;background:#22c55e;"></span>
-                    Live brand filters
-                </span>
-            </div>
-            <div class="brands-grid" id="brands-grid">
-                <!-- Brand cards populated via JavaScript -->
-            </div>
-        </section>
-
-        <!-- Offline & Offers -->
-        <section id="offline" class="section-shell fade-section">
-            <div class="section-header">
-                <div class="section-title-block">
-                    <h2>Offline stores &amp; offers</h2>
-                    <p>Browse availability by mode &amp; unlock offline-only cricket experiences.</p>
-                </div>
-                <span class="badge-inline">
-                    <span style="width:6px;height:6px;border-radius:999px;background:#22c55e;"></span>
-                    Online / Offline
-                </span>
-            </div>
-            <div class="offers-banner">
-                <div class="offers-main">
-                    <div class="offers-title">Weekend powerplay sale</div>
-                    <div class="offers-sub">
-                        Extra <span class="highlight">10% OFF</span> on cricket kits with any bat, valid for both online checkout
-                        and in-store pickup at TACSPORTS offline hubs.
-                    </div>
-                </div>
-                <div class="countdown" aria-label="Offer countdown timer">
-                    <span class="countdown-label">Ends in</span>
-                    <div class="countdown-box" id="countdown-box">
-                        <div class="countdown-unit">
-                            <span class="value" id="cd-hours">02</span>
-                            <span>hrs</span>
-                        </div>
-                        <div class="countdown-unit">
-                            <span class="value" id="cd-mins">15</span>
-                            <span>min</span>
-                        </div>
-                        <div class="countdown-unit">
-                            <span class="value" id="cd-secs">49</span>
-                            <span>sec</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="offers-coupon">
-                    <span>Use coupon</span>
-                    <span class="coupon-pill" id="coupon-code">TACPOWER10</span>
-                    <button class="coupon-apply-btn btn-ripple" id="coupon-apply">Apply</button>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Bottom contact / mobile nav -->
-    <div class="bottom-bar">
-        <div class="bottom-contact">
-            <div class="bottom-contact-label">Contact TACSPORTS</div>
-            <div class="bottom-contact-number">+91-98765-43210</div>
-        </div>
-        <div class="bottom-actions">
-            <button class="contact-icon-btn whatsapp btn-ripple">
-                <span class="contact-icon">🟢</span>
-                <span>WhatsApp</span>
-            </button>
-            <button class="contact-icon-btn call btn-ripple">
-                <span class="contact-icon">📞</span>
-                <span>Call</span>
-            </button>
-        </div>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo-dot"></div>
+        ProEdge Sports
+      </div>
+      <nav class="menu">
+        <a href="#home">Home</a>
+        <a href="#sports">Sports</a>
+        <a href="#products">Products</a>
+        <a href="#brands">Brands</a>
+        <a href="#offers">Offers</a>
+      </nav>
+      <div class="search">
+        <input type="search" placeholder="Search performance gear..." aria-label="Search sports gear" />
+        <span>🔍</span>
+      </div>
+      <button class="cart-btn" id="cartToggle">
+        🛒 Cart
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
     </div>
+  </header>
 
-    <footer>
-        <div class="footer-inner">
-            <div>
-                <div class="footer-title">About TACSPORTS</div>
-                <p class="footer-copy">
-                    TACSPORTS is a next-gen sports commerce brand focused on cricket-first experiences with a seamless
-                    bridge between online shopping and offline play. Designed for beginners, enthusiasts and pros.
-                </p>
-            </div>
-            <div>
-                <div class="footer-title">Stay in the game</div>
-                <p class="footer-copy">Get early access to bat drops, kit bundles and offline coaching events.</p>
-                <form class="newsletter-form" onsubmit="return false;">
-                    <input class="newsletter-input" type="email" placeholder="Enter email for updates" />
-                    <button class="newsletter-btn btn-ripple">Join</button>
-                </form>
-            </div>
-            <div>
-                <div class="footer-title">Connect</div>
-                <p class="footer-copy">Follow TACSPORTS across social platforms.</p>
-                <div class="social-row">
-                    <button class="social-icon btn-ripple" aria-label="Instagram">IG</button>
-                    <button class="social-icon btn-ripple" aria-label="YouTube">YT</button>
-                    <button class="social-icon btn-ripple" aria-label="Twitter">X</button>
-                </div>
-                <p class="footer-copy" style="margin-top:8px;">© <span id="year"></span> TACSPORTS. All rights reserved.</p>
-            </div>
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-grid">
+        <div class="hero-copy" data-anim>
+          <div class="badge">Match Ready • Pro-Level Gear</div>
+          <h1>Gear Up Like a Pro</h1>
+          <p>Cricket bats with explosive sweet spots, lockdown grip gloves, and match-ready helmets engineered for speed and control.</p>
+          <div class="cta-row">
+            <button class="btn btn-primary">Shop Now</button>
+            <button class="btn btn-ghost">View Cricket Gear</button>
+          </div>
         </div>
-    </footer>
-</div>
+        <div class="hero-visual" data-anim>
+          <div class="hero-card">
+            <div class="hero-prod">
+              <div class="meta-title">Elite Cricket Blade • PowerGrip</div>
+              <div class="hero-meta">
+                <span class="pill green">Lightweight</span>
+                <span class="pill blue">Pro Balance</span>
+              </div>
+              <img src="power .png" alt="Cricket bat">
+              <div class="price-row">
+                <span class="price">2000rs</span>
+                <span class="old">30000rs</span>
+              </div>
+              <button class="add-btn" data-add="Elite Cricket Blade">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<!-- Cart slide-in panel -->
-<div class="cart-panel-backdrop" id="cart-backdrop" aria-hidden="true">
-    <aside class="cart-panel" id="cart-panel" aria-label="Shopping cart">
-        <div class="cart-panel-header">
-            <h3>Your cart</h3>
-            <button class="cart-close-btn btn-ripple" id="cart-close" aria-label="Close cart">✕</button>
+    <section id="products">
+      <div class="section-head">
+        <h2>Cricket Equipment</h2>
+        <div class="tabs">
+          <button class="tab active">Bats</button>
+          <button class="tab">Kits</button>
+          <button class="tab">Gloves</button>
+          <button class="tab">Helmets</button>
         </div>
-        <div class="cart-body" id="cart-items"></div>
-        <div class="cart-footer">
-            <div class="cart-summary-row">
-                <span>Items</span>
-                <strong id="cart-items-count">0</strong>
-            </div>
-            <div class="cart-summary-row">
-                <span>Total</span>
-                <strong><span>₹</span><span id="cart-total">0</span></strong>
-            </div>
-            <button class="cart-checkout-btn btn-ripple">Checkout</button>
+      </div>
+      <div class="grid" data-anim>
+        <!-- Sample cricket cards -->
+        <div class="card">
+          <div class="card-img">
+            <span class="discount">-20%</span>
+            <img src="bat.png" alt="Cricket bat">
+          </div>
+          <div class="card-body">
+            <span class="brand-tag">cricket bats</span>
+            <p class="title">Velocity Blade 4.0</p>
+            <div class="price-row"><span class="price">40000rs</span><span class="old">400000rs</span></div>
+            <button class="add-btn" data-add="Velocity Blade 4.0">Add to Cart</button>
+          </div>
         </div>
-    </aside>
-</div>
 
-<!-- Quick view modal -->
-<div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
-    <div class="modal" id="quick-view-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="modal-header">
-            <div class="modal-title" id="modal-title">Quick view</div>
-            <button class="modal-close-btn btn-ripple" id="modal-close" aria-label="Close quick view">✕</button>
+        <div class="card">
+          <div class="card-img">
+            <span class="discount">-15%</span>
+            <img src="2 bat.png " alt="Cricket kit">
+          </div>
+          <div class="card-body">
+            <span class="brand-tag">Kookaburra</span>
+            <p class="title">Pro Kit Armor</p>
+            <div class="price-row"><span class="price">300rs</span><span class="old">8900rs</span></div>
+            <button class="add-btn" data-add="Pro Kit Armor">Add to Cart</button>
+          </div>
         </div>
-        <div class="modal-body">
-            <div>
-                <div class="modal-bat" aria-hidden="true"></div>
-            </div>
-            <div>
-                <div class="modal-badge-row">
-                    <span class="badge-inline">
-                        <span style="width:6px;height:6px;border-radius:999px;background:#22c55e;"></span>
-                        Online
-                    </span>
-                    <span class="badge-inline">
-                        <span style="width:6px;height:6px;border-radius:999px;background:#38bdf8;"></span>
-                        Offline
-                    </span>
-                </div>
-                <div class="modal-desc" id="modal-desc">
-                    Premium English willow cricket bat with balanced pick-up, designed for attacking stroke play with long
-                    sweet spot and optimized edges.
-                </div>
-                <div class="modal-infos">
-                    <div class="modal-info-pill" id="modal-brand">Brand: SS</div>
-                    <div class="modal-info-pill" id="modal-weight">Weight: 1180g</div>
-                    <div class="modal-info-pill" id="modal-grade">Grade: Pro</div>
-                    <div class="modal-info-pill" id="modal-mode">Mode: Online + Offline</div>
-                </div>
-                <div class="modal-price">
-                    <div>
-                        <div><span class="currency">₹</span><span id="modal-price">0</span></div>
-                        <div class="product-price-old" id="modal-old-price">₹0</div>
-                    </div>
-                    <div class="badge-discount">
-                        <span>-</span><span class="percent" id="modal-discount">0%</span>
-                    </div>
-                </div>
-                <div class="modal-footer-actions">
-                    <button class="btn-ghost btn-ripple" id="modal-store">
-                        View offline stores
-                    </button>
-                    <button class="btn-primary btn-ripple" id="modal-add-cart">
-                        <span>Add to Cart</span>
-                    </button>
-                </div>
-            </div>
+
+        <div class="card">
+          <div class="card-img">
+            <span class="discount">-10%</span>
+            <img src="glove.png" alt="Cricket gloves">
+          </div>
+          <div class="card-body">
+            <span class="brand-tag">SG</span>
+            <p class="title">GripLock Gloves</p>
+            <div class="price-row"><span class="price">700rs</span><span class="old">240rs</span></div>
+            <button class="add-btn" data-add="GripLock Gloves">Add to Cart</button>
+          </div>
         </div>
+
+        <div class="card">
+          <div class="card-img">
+            <span class="discount">-18%</span>
+            <img src="helmate.png" alt="Cricket helmet">
+          </div>
+          <div class="card-body">
+            <span class="brand-tag">SG</span>
+            <p class="title">AeroGuard Helmet</p>
+            <div class="price-row"><span class="price">2000rs</span><span class="old">30000rs</span></div>
+            <button class="add-btn" data-add="AeroGuard Helmet">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sports">
+      <div class="section-head">
+        <h2>Other Sports</h2>
+        <div class="tabs">
+          <button class="tab active">Football</button>
+          <button class="tab">Badminton</button>
+          <button class="tab">Fitness</button>
+          <button class="tab">Accessories</button>
+        </div>
+      </div>
+      <div class="grid" data-anim>
+        <!-- Sample mixed sports cards -->
+        <div class="card">
+          <div class="card-img">
+            <span class="discount">-25%</span>
+            <img src="shoe.png" alt="Football boots">
+          </div>
+          <div class="card-body">
+            <span class="brand-tag">Nike</span>
+            <p class="title">Mercurial Vapor 360</p>
+            <div class="price-row"><span class="price">3000rs</span><span class="old">40000rs/span></div>
+            <button class="add-btn" data-add="Mercurial Vapor 360">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <span class="discount">-12%</span>
+            <img src="run.png" alt="Headphones">
+          </div>
+          <div class="card-body">
+            <span class="brand-tag">JBL</span>
+            <p class="title">Endurance Run BT</p>
+            <div class="price-row"><span class="price">350rs</span><span class="old">680rs</span></div>
+            <button class="add-btn" data-add="Endurance Run BT">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <span class="discount">-14%</span>
+            <img src="astrop.png" alt="Badminton racket">
+          </div>
+          <div class="card-body">
+            <span class="brand-tag">Yonex</span>
+            <p class="title">Astrox 99 Pro</p>
+            <div class="price-row"><span class="price">1789rs</span><span class="old">4000rs</span></div>
+            <button class="add-btn" data-add="Astrox 99 Pro">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img">
+            <span class="discount">-20%</span>
+            <img src="dumbel.png" alt="Dumbbells">
+          </div>
+          <div class="card-body">
+            <span class="brand-tag">Rogue</span>
+            <p class="title">Hex Iron Dumbbells</p>
+            <div class="price-row"><span class="price">899rs</span><span class="old">900rs</span></div>
+            <button class="add-btn" data-add="Hex Iron Dumbbells">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="brands">
+      <div class="section-head">
+        <h2>Power Brands</h2>
+        <div class="tabs">
+          <button class="tab active">All</button>
+          <button class="tab">Cricket</button>
+          <button class="tab">Football</button>
+          <button class="tab">Fitness</button>
+        </div>
+      </div>
+      <div class="brands" data-anim>
+        <div class="brand-card">Adidas</div>
+        <div class="brand-card">Nike</div>
+        <div class="brand-card">Puma</div>
+        <div class="brand-card">Gray-Nicolls</div>
+        <div class="brand-card">SG</div>
+        <div class="brand-card">Kookaburra</div>
+        <div class="brand-card">Yonex</div>
+        <div class="brand-card">Rogue</div>
+      </div>
+    </section>
+
+    <section id="offers">
+      <div class="section-head">
+        <h2>Flash Deals</h2>
+        <button class="btn btn-ghost">View All</button>
+      </div>
+      <div class="offers-grid" data-anim>
+        <div class="offer">
+          <h3>Cricket Power Pack</h3>
+          <p>Bat + Gloves + Helmet bundle with pro-level grip.</p>
+          <div class="timer" id="timer1"></div>
+        </div>
+        <div class="offer">
+          <h3>Football Speed Kit</h3>
+          <p>Boots + Match Ball + Guard. Engineered for pace.</p>
+          <div class="timer" id="timer2"></div>
+        </div>
+        <div class="offer">
+          <h3>Fitness Essentials</h3>
+          <p>Resistance bands + rope + bottle. Lock-in daily grind.</p>
+          <div class="timer" id="timer3"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom nav for mobile -->
+  <div class="bottom-bar">
+    <div class="bottom-item active">🏠 Home</div>
+    <div class="bottom-item">🏏 Sports</div>
+    <div class="bottom-item">🏷 Offers</div>
+    <div class="bottom-item" id="bottomCart">🛒 Cart</div>
+  </div>
+
+  <!-- Cart panel -->
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <strong>Cart</strong>
+      <button class="btn-ghost btn" id="cartClose">Close</button>
     </div>
-</div>
+    <div class="cart-items" id="cartItems">
+      <p style="color: var(--muted); margin: 0;">No items yet. Add gear to dominate.</p>
+    </div>
+    <div class="cart-footer">
+      <div class="total-row">
+        <span>Total</span>
+        <span id="cartTotal">$0</span>
+      </div>
+      <button class="checkout-btn">Checkout</button>
+    </div>
+  </aside>
 
-<script>
-    // --- Data model ---
-    const products = [
-        {
-            id: "bat-ss-sky",
-            type: "bat",
-            name: "SS SKY PowerDrive",
-            brand: "SS",
-            brandColor: "blue",
-            brandShort: "SS",
-            subtitle: "Pro English willow · Grade 1",
-            price: 18999,
-            oldPrice: 23999,
-            discount: 21,
-            weight: "light",
-            range: "pro",
-            mode: "online-offline",
-            bestFor: "T20 power hitters",
-            labelStripe: "SS SKY",
-            stripeVariant: "default",
-            imageUrl: "https://images.unsplash.com/photo-1584267385494-9fdd9a71ad75?auto=format&fit=crop&w=900&q=80",
-            searchTags: ["ss", "sky", "powerdrive", "cricket bat", "english willow", "t20"],
-        },
-        {
-            id: "bat-mrf-legend",
-            type: "bat",
-            name: "MRF Legend Pro",
-            brand: "MRF",
-            brandColor: "red",
-            brandShort: "MRF",
-            subtitle: "Classic profile · Pro balance",
-            price: 17999,
-            oldPrice: 22999,
-            discount: 22,
-            weight: "balanced",
-            range: "pro",
-            mode: "online",
-            bestFor: "All-format strokers",
-            labelStripe: "MRF",
-            stripeVariant: "alt",
-            imageUrl: "https://images.unsplash.com/photo-1609220136736-443140cffec5?auto=format&fit=crop&w=900&q=80",
-            searchTags: ["mrf", "legend", "pro", "cricket bat"],
-        },
-        {
-            id: "bat-kb-blaze",
-            type: "bat",
-            name: "Kookaburra Blaze X",
-            brand: "Kookaburra",
-            brandColor: "green",
-            brandShort: "KB",
-            subtitle: "Extended sweet spot",
-            price: 12499,
-            oldPrice: 14999,
-            discount: 17,
-            weight: "balanced",
-            range: "mid",
-            mode: "online-offline",
-            bestFor: "Aggressive stroke makers",
-            labelStripe: "KB",
-            stripeVariant: "gray",
-            imageUrl: "https://images.unsplash.com/photo-1599059810102-2fb8c5c2c2b3?auto=format&fit=crop&w=900&q=80",
-            searchTags: ["kookaburra", "kb", "blaze", "cricket bat"],
-        },
-        {
-            id: "bat-sg-elite",
-            type: "bat",
-            name: "SG Elite Drive",
-            brand: "SG",
-            brandColor: "gray",
-            brandShort: "SG",
-            subtitle: "Light pick-up · All-round",
-            price: 9999,
-            oldPrice: 12999,
-            discount: 23,
-            weight: "light",
-            range: "budget",
-            mode: "offline",
-            bestFor: "Beginners & club",
-            labelStripe: "SG",
-            stripeVariant: "default",
-            imageUrl: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=900&q=80",
-            searchTags: ["sg", "elite", "drive", "cricket bat"],
-        },
-        // Kits
-        {
-            id: "kit-pro-combo",
-            type: "kit",
-            name: "Pro Match-Day Kit",
-            brand: "Mixed",
-            subtitle: "Bat + pads + gloves + bag",
-            price: 21999,
-            oldPrice: 26999,
-            range: "pro",
-            mode: "online-offline",
-            compareKey: "pro",
-            imageUrl: "https://cdn.pixabay.com/photo/2014/03/30/12/22/cricket-300556_1280.jpg",
-            searchTags: ["cricket kit", "pro", "pads", "bag"],
-        },
-        {
-            id: "kit-starter",
-            type: "kit",
-            name: "Starter Academy Kit",
-            brand: "Mixed",
-            subtitle: "For beginners &amp; nets",
-            price: 8999,
-            oldPrice: 11999,
-            range: "budget",
-            mode: "online",
-            compareKey: "starter",
-            imageUrl: "https://cdn.pixabay.com/photo/2013/02/09/04/15/cricket-79576_1280.jpg",
-            searchTags: ["starter kit", "academy", "beginners"],
-        },
-        {
-            id: "kit-travel",
-            type: "kit",
-            name: "Travel Squad Kit",
-            brand: "Mixed",
-            subtitle: "Compact touring setup",
-            price: 14999,
-            oldPrice: 17999,
-            range: "mid",
-            mode: "offline",
-            compareKey: "travel",
-            imageUrl: "https://cdn.pixabay.com/photo/2014/03/30/12/10/cricket-300554_1280.jpg",
-            searchTags: ["travel", "squad", "kit"],
-        },
-    ];
+  <script>
+    // Intersection observer for reveal animations
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.18 });
+    document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
 
-    const brands = [
-        { id: "SS", name: "SS", sport: "Cricket", color: "blue", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Cricket_bat_icon.png/320px-Cricket_bat_icon.png" },
-        { id: "MRF", name: "MRF", sport: "Cricket", color: "red", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Cricket_equipment_MRF_bat.jpg/320px-Cricket_equipment_MRF_bat.jpg" },
-        { id: "Kookaburra", name: "Kookaburra", sport: "Cricket", color: "green", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Kookaburra_cricket_bat_logo.png/320px-Kookaburra_cricket_bat_logo.png" },
-        { id: "SG", name: "SG", sport: "Cricket", color: "gray", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Cricket_SG_logo.png/320px-Cricket_SG_logo.png" },
-        { id: "Adidas", name: "Adidas", sport: "Multi-sport", color: "blue", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/320px-Adidas_Logo.svg.png" },
-        { id: "Nike", name: "Nike", sport: "Multi-sport", color: "gray", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/320px-Logo_NIKE.svg.png" },
-        { id: "Puma", name: "Puma", sport: "Football · Fitness", color: "green", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Puma_AG.svg/320px-Puma_AG.svg.png" },
-        { id: "Yonex", name: "Yonex", sport: "Badminton", color: "blue", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Yonex_logo.svg/320px-Yonex_logo.svg.png" },
-        { id: "Nivia", name: "Nivia", sport: "Football", color: "gray", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Nivia_logo.png/320px-Nivia_logo.png" },
-        { id: "New Balance", name: "New Balance", sport: "Running · Cricket", color: "red", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/New_Balance_logo.svg/320px-New_Balance_logo.svg.png" },
-        { id: "Gray-Nicolls", name: "Gray-Nicolls", sport: "Cricket", color: "red", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Gray-Nicolls_logo.png/320px-Gray-Nicolls_logo.png" },
-        { id: "GM", name: "Gunn &amp; Moore", sport: "Cricket", color: "gray", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Gunn_%26_Moore_logo.png/320px-Gunn_%26_Moore_logo.png" },
-    ];
+    // Simple cart state
+    const cart = [];
+    const cartCount = document.getElementById('cartCount');
+    const cartPanel = document.getElementById('cartPanel');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
 
-    // --- Utility: currency formatting ---
-    const formatCurrency = (val) => val.toLocaleString("en-IN");
+    function renderCart() {
+      if (!cart.length) {
+        cartItems.innerHTML = '<p style="color: var(--muted); margin:0;">No items yet. Add gear to dominate.</p>';
+        cartTotal.textContent = '$0';
+        cartCount.textContent = '0';
+        return;
+      }
+      cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div style="background:#0f172a;border-radius:8px;overflow:hidden;">
+            <div style="width:60px;height:60px;background:linear-gradient(135deg,rgba(52,211,153,0.2),rgba(34,211,238,0.2));"></div>
+          </div>
+          <div>
+            <div style="font-weight:800;">${item.name}</div>
+            <div style="color:var(--muted);">$${item.price}</div>
+          </div>
+          <button style="background:none;color:var(--muted);border:none;font-weight:800;" data-remove="${item.name}">✕</button>
+        </div>
+      `).join('');
+      cartTotal.textContent = '$' + cart.reduce((s, i) => s + i.price, 0);
+      cartCount.textContent = cart.length;
+    }
 
-    // --- DOM references ---
-    const cricketGridEl = document.getElementById("cricket-grid");
-    const kitsGridEl = document.getElementById("kits-grid");
-    const brandsGridEl = document.getElementById("brands-grid");
-    const searchInputEl = document.getElementById("search-input");
-    const searchShell = document.getElementById("search-shell");
-    const searchSuggestionsEl = document.getElementById("search-suggestions");
-    const cartCountEl = document.getElementById("cart-count");
-    const cartItemsContainer = document.getElementById("cart-items");
-    const cartTotalEl = document.getElementById("cart-total");
-    const cartItemsCountEl = document.getElementById("cart-items-count");
-    const cartPanelBackdrop = document.getElementById("cart-backdrop");
-    const cartPanel = document.getElementById("cart-panel");
-    const modalBackdrop = document.getElementById("modal-backdrop");
-    const modalEl = document.getElementById("quick-view-modal");
+    function addToCart(name) {
+      const price = Math.floor(50 + Math.random() * 200);
+      cart.push({ name, price });
+      renderCart();
+      cartPanel.classList.add('open');
+    }
 
-    // Modal fields
-    const modalBrandEl = document.getElementById("modal-brand");
-    const modalWeightEl = document.getElementById("modal-weight");
-    const modalGradeEl = document.getElementById("modal-grade");
-    const modalModeEl = document.getElementById("modal-mode");
-    const modalPriceEl = document.getElementById("modal-price");
-    const modalOldPriceEl = document.getElementById("modal-old-price");
-    const modalDiscountEl = document.getElementById("modal-discount");
-    const modalTitleEl = document.getElementById("modal-title");
-    const modalDescEl = document.getElementById("modal-desc");
-
-    let currentQuickViewProduct = null;
-    const cart = {};
-
-    // --- Ripple effect binding ---
-    const attachRipple = (e) => {
-        const btn = e.currentTarget;
-        const rect = btn.getBoundingClientRect();
-        const span = document.createElement("span");
-        span.classList.add("ripple");
-        const size = Math.max(rect.width, rect.height);
-        span.style.width = span.style.height = size + "px";
-        span.style.left = e.clientX - rect.left - size / 2 + "px";
-        span.style.top = e.clientY - rect.top - size / 2 + "px";
-        btn.appendChild(span);
-        span.addEventListener("animationend", () => span.remove());
-    };
-
-    const initRippleButtons = () => {
-        document.querySelectorAll(".btn-ripple").forEach((btn) => {
-            btn.addEventListener("click", attachRipple);
-        });
-    };
-
-    // --- Nav scrolling ---
-    document.addEventListener("click", (e) => {
-        const target = e.target.closest("[data-nav-target]");
-        if (!target) return;
-        const id = target.getAttribute("data-nav-target");
-        const section = document.getElementById(id) || (id === "categories" ? document.getElementById("brands") : null);
-        if (section) {
-            e.preventDefault();
-            const rect = section.getBoundingClientRect();
-            const offset = rect.top + window.scrollY - 90;
-            window.scrollTo({ top: offset, behavior: "smooth" });
-        }
+    document.querySelectorAll('[data-add]').forEach(btn => {
+      btn.addEventListener('click', () => addToCart(btn.dataset.add));
     });
 
-    // --- Search toggle + suggestions ---
-    document.querySelector(".search-toggle").addEventListener("click", () => {
-        searchShell.classList.toggle("active");
-        if (searchShell.classList.contains("active")) {
-            setTimeout(() => searchInputEl.focus(), 150);
-        } else {
-            searchSuggestionsEl.classList.remove("visible");
-            searchInputEl.value = "";
-        }
+    cartItems.addEventListener('click', e => {
+      if (e.target.dataset.remove) {
+        const idx = cart.findIndex(i => i.name === e.target.dataset.remove);
+        if (idx > -1) cart.splice(idx, 1);
+        renderCart();
+      }
     });
 
-    const buildSearchIndex = () => {
-        const index = [];
-        products.forEach((p) => {
-            const combined = [p.name, p.brand, ...(p.searchTags || [])]
-                .join(" ")
-                .toLowerCase();
-            index.push({ id: p.id, label: p.name, brand: p.brand, type: p.type, haystack: combined });
-        });
-        brands.forEach((b) => {
-            index.push({
-                id: "brand-" + b.id,
-                label: b.name,
-                brand: b.name,
-                type: "brand",
-                haystack: (b.name + " " + (b.sport || "")).toLowerCase(),
-            });
-        });
-        return index;
-    };
+    const cartToggle = document.getElementById('cartToggle');
+    const cartClose = document.getElementById('cartClose');
+    const bottomCart = document.getElementById('bottomCart');
 
-    const searchIndex = buildSearchIndex();
+    cartToggle.onclick = () => cartPanel.classList.toggle('open');
+    cartClose.onclick = () => cartPanel.classList.remove('open');
+    bottomCart.onclick = () => cartPanel.classList.toggle('open');
 
-    const renderSuggestions = (query) => {
-        const q = query.trim().toLowerCase();
-        searchSuggestionsEl.innerHTML = "";
-        if (!q) {
-            searchSuggestionsEl.classList.remove("visible");
-            return;
-        }
-        const results = searchIndex.filter((item) => item.haystack.includes(q)).slice(0, 7);
-        if (!results.length) {
-            searchSuggestionsEl.classList.remove("visible");
-            return;
-        }
-        results.forEach((item) => {
-            const div = document.createElement("div");
-            div.className = "search-suggestion-item";
-            const labelHTML = item.label.replace(
-                new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig"),
-                "<mark>$1</mark>"
-            );
-            div.innerHTML = '<span class="label">' + labelHTML + '</span>' +
-                '<span class="type">' + (item.type === "bat" || item.type === "kit" ? "Product" : "Brand") + "</span>";
-            div.dataset.id = item.id;
-            div.dataset.type = item.type;
-            searchSuggestionsEl.appendChild(div);
-        });
-        searchSuggestionsEl.classList.add("visible");
-    };
-
-    searchInputEl.addEventListener("input", (e) => {
-        renderSuggestions(e.target.value);
-    });
-
-    searchSuggestionsEl.addEventListener("click", (e) => {
-        const item = e.target.closest(".search-suggestion-item");
-        if (!item) return;
-        const id = item.dataset.id;
-        const type = item.dataset.type;
-        if (type === "brand") {
-            const brandId = id.replace("brand-", "");
-            const brandBtn = document.querySelector('[data-filter-brand="' + brandId + '"]');
-            if (brandBtn) {
-                document.querySelectorAll("#brand-filters .filter-chip").forEach((chip) => chip.classList.remove("active"));
-                brandBtn.classList.add("active");
-                applyCricketFilters();
-                const productsSection = document.getElementById("products");
-                const rect = productsSection.getBoundingClientRect();
-                window.scrollTo({ top: rect.top + window.scrollY - 90, behavior: "smooth" });
-            }
-        } else {
-            const product = products.find((p) => p.id === id);
-            if (product) {
-                openQuickView(product);
-            }
-        }
-        searchSuggestionsEl.classList.remove("visible");
-        searchInputEl.value = "";
-    });
-
-    document.addEventListener("click", (e) => {
-        if (!searchShell.contains(e.target) && !e.target.closest(".search-toggle")) {
-            searchSuggestionsEl.classList.remove("visible");
-        }
-    });
-
-    // Mouse position CSS variable for nav ripple gradient
-    document.querySelectorAll(".nav-btn").forEach((btn) => {
-        btn.addEventListener("pointermove", (e) => {
-            const rect = btn.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            btn.style.setProperty("--x", x + "%");
-            btn.style.setProperty("--y", y + "%");
-        });
-    });
-
-    // --- Cricket bats rendering & filters ---
-    const renderCricketBats = (filter = {}) => {
-        cricketGridEl.innerHTML = "";
-        const bats = products.filter((p) => p.type === "bat");
-        bats
-            .filter((bat) => {
-                if (filter.brand && filter.brand !== "all" && bat.brand !== filter.brand) return false;
-                if (filter.range && filter.range !== "all" && bat.range !== filter.range) return false;
-                if (filter.weight && bat.weight !== filter.weight) return false;
-                return true;
-            })
-            .forEach((bat) => {
-                const card = document.createElement("article");
-                card.className = "product-card";
-                card.dataset.productId = bat.id;
-                card.innerHTML =
-                    '<div class="product-card-header">' +
-                    '<div class="brand-pill">' +
-                    '<span class="brand-logo ' + bat.brandColor + '">' + bat.brandShort + "</span>" +
-                    "<span>" + bat.brand + "</span>" +
-                    "</div>" +
-                    '<div class="badge-discount"><span>-</span><span class="percent">' + bat.discount + "%</span></div>" +
-                    "</div>" +
-                    '<div class="product-media">' +
-                    (bat.imageUrl
-                        ? '<img class="product-img" src="' + bat.imageUrl + '" alt="' + bat.brand + ' ' + bat.name + ' cricket bat" loading="lazy" />'
-                        : "") +
-                    '<div class="bat-illustration">' +
-                    '<div class="bat-brand-stripe ' + (bat.stripeVariant || "") + '">' + bat.labelStripe + "</div>" +
-                    "</div>" +
-                    '<div class="bat-shadow-ring"></div>' +
-                    "</div>" +
-                    '<div class="product-info">' +
-                    '<div class="product-title">' + bat.name + "</div>" +
-                    '<div class="product-subtitle">' + bat.subtitle + "</div>" +
-                    '<div class="product-price-row">' +
-                    '<div class="product-price-main"><span class="currency">₹</span><span class="amount">' + formatCurrency(bat.price) + "</span></div>" +
-                    '<div class="product-price-old">₹' + formatCurrency(bat.oldPrice) + "</div>" +
-                    "</div>" +
-                    '<div class="product-meta-row">' +
-                    '<div class="availability-pill ' + (bat.mode === "online-offline" ? "mixed" : bat.mode) + '">' +
-                    '<span class="dot"></span>' +
-                    (bat.mode === "online-offline" ? "Online + Offline" : bat.mode === "online" ? "Online only" : "Offline only") +
-                    "</div>" +
-                    '<button class="quick-view-btn" type="button">Quick view</button>' +
-                    "</div>" +
-                    '<div class="product-card-footer">' +
-                    '<button class="btn-add-cart btn-ripple" type="button">' +
-                    '<span>+ Add to Cart</span>' +
-                    "</button>" +
-                    '<div class="best-for-tag">Best for <span>' + bat.bestFor + "</span></div>" +
-                    "</div>" +
-                    "</div>";
-                cricketGridEl.appendChild(card);
-            });
-    };
-
-    const getActiveBatFilter = () => {
-        const activeBrand = document.querySelector("#brand-filters .filter-chip.active");
-        const activeRange = document.querySelector("#misc-filters .filter-chip[data-filter-range].active");
-        const activeWeight = document.querySelector("#misc-filters .filter-chip[data-filter-weight].active");
-        return {
-            brand: activeBrand ? activeBrand.dataset.filterBrand : "all",
-            range: activeRange ? activeRange.dataset.filterRange : "all",
-            weight: activeWeight ? activeWeight.dataset.filterWeight : "",
-        };
-    };
-
-    const applyCricketFilters = () => {
-        const filter = getActiveBatFilter();
-        renderCricketBats(filter);
-        bindProductActions();
-    };
-
-    document.getElementById("brand-filters").addEventListener("click", (e) => {
-        const chip = e.target.closest(".filter-chip");
-        if (!chip) return;
-        document.querySelectorAll("#brand-filters .filter-chip").forEach((c) => c.classList.remove("active"));
-        chip.classList.add("active");
-        applyCricketFilters();
-    });
-
-    document.getElementById("misc-filters").addEventListener("click", (e) => {
-        const chip = e.target.closest(".filter-chip");
-        if (!chip) return;
-        if (chip.dataset.filterRange) {
-            document.querySelectorAll('#misc-filters .filter-chip[data-filter-range]').forEach((c) => c.classList.remove("active"));
-        }
-        if (chip.dataset.filterWeight) {
-            const wasActive = chip.classList.contains("active");
-            document.querySelectorAll('#misc-filters .filter-chip[data-filter-weight]').forEach((c) => c.classList.remove("active"));
-            if (!wasActive) {
-                chip.classList.add("active");
-            }
-        } else {
-            chip.classList.add("active");
-        }
-        applyCricketFilters();
-    });
-
-    // --- Kits rendering ---
-    const renderKits = () => {
-        kitsGridEl.innerHTML = "";
-        products
-            .filter((p) => p.type === "kit")
-            .forEach((kit) => {
-                const card = document.createElement("article");
-                card.className = "kit-card";
-                card.dataset.productId = kit.id;
-                card.innerHTML =
-                    '<div class="kit-tag-row">' +
-                    '<span class="kit-tag">Full kit</span>' +
-                    '<label class="compare-toggle"><input type="checkbox" data-compare-id="' + kit.id + '" /> Compare</label>' +
-                    "</div>" +
-                    '<div class="kit-media">' +
-                    (kit.imageUrl
-                        ? '<img class="kit-img" src="' + kit.imageUrl + '" alt="' + kit.name + ' cricket kit" loading="lazy" />'
-                        : "") +
-                    "</div>" +
-                    '<div class="kit-title">' + kit.name + "</div>" +
-                    '<div class="kit-meta">' + kit.subtitle + "</div>" +
-                    '<div class="kit-price-row">' +
-                    '<div><span class="currency">₹</span><span>' + formatCurrency(kit.price) + "</span></div>" +
-                    '<div class="kit-price-old">₹' + formatCurrency(kit.oldPrice) + "</div>" +
-                    "</div>";
-                kitsGridEl.appendChild(card);
-            });
-    };
-
-    // --- Brands rendering ---
-    const renderBrands = () => {
-        brandsGridEl.innerHTML = "";
-        brands.forEach((b) => {
-            const card = document.createElement("article");
-            card.className = "brand-card";
-            card.dataset.brandId = b.id;
-            const colorClass = b.color || "gray";
-            card.innerHTML =
-                (b.imageUrl
-                    ? '<img class="brand-card-img" src="' + b.imageUrl + '" alt="' + b.name + ' logo" loading="lazy" />'
-                    : "") +
-                '<div class="brand-card-logo brand-logo ' + colorClass + '">' +
-                b.name
-                    .split(" ")
-                    .map((part) => part[0])
-                    .join("") +
-                "</div>" +
-                '<div class="brand-card-name">' + b.name + "</div>" +
-                '<div class="brand-card-sport">' + b.sport + "</div>";
-            brandsGridEl.appendChild(card);
-        });
-    };
-
-    // Brand click → filter bats by brand
-    brandsGridEl.addEventListener("click", (e) => {
-        const card = e.target.closest(".brand-card");
-        if (!card) return;
-        const brandId = card.dataset.brandId;
-        const brandBtn = document.querySelector('#brand-filters .filter-chip[data-filter-brand="' + brandId + '"]');
-        if (brandBtn) {
-            document.querySelectorAll("#brand-filters .filter-chip").forEach((c) => c.classList.remove("active"));
-            brandBtn.classList.add("active");
-            applyCricketFilters();
-            const productsSection = document.getElementById("products");
-            const rect = productsSection.getBoundingClientRect();
-            window.scrollTo({ top: rect.top + window.scrollY - 90, behavior: "smooth" });
-        }
-    });
-
-    // --- Cart logic ---
-    const updateCartUI = () => {
-        const entries = Object.values(cart);
-        if (!entries.length) {
-            cartItemsContainer.innerHTML = '<div class="cart-empty">Your cart is empty. Add your first TACSPORTS bat or kit.</div>';
-        } else {
-            cartItemsContainer.innerHTML = "";
-        }
-        let total = 0;
-        let count = 0;
-        entries.forEach((entry) => {
-            const { product, qty } = entry;
-            count += qty;
-            total += product.price * qty;
-            const itemEl = document.createElement("div");
-            itemEl.className = "cart-item";
-            itemEl.dataset.cartId = product.id;
-            itemEl.innerHTML =
-                '<div class="cart-item-media" aria-hidden="true"></div>' +
-                '<div class="cart-item-info">' +
-                '<div class="cart-item-title">' + product.name + "</div>" +
-                '<div class="cart-item-meta">' + product.brand + (product.type === "kit" ? " · Kit" : " · Bat") + "</div>" +
-                '<div class="cart-item-remove">Remove</div>' +
-                "</div>" +
-                '<div class="cart-item-qty">' +
-                '<div class="qty-controls">' +
-                '<button class="qty-btn" data-action="dec">-</button>' +
-                '<div class="qty-display">' + qty + "</div>" +
-                '<button class="qty-btn" data-action="inc">+</button>' +
-                "</div>" +
-                '<div class="cart-item-price">₹' + formatCurrency(product.price * qty) + "</div>" +
-                "</div>";
-            cartItemsContainer.appendChild(itemEl);
-        });
-        cartCountEl.textContent = count;
-        cartItemsCountEl.textContent = count;
-        cartTotalEl.textContent = formatCurrency(total);
-        cartCountEl.classList.remove("bump");
-        void cartCountEl.offsetWidth;
-        cartCountEl.classList.add("bump");
-    };
-
-    const addToCart = (productId) => {
-        const product = products.find((p) => p.id === productId);
-        if (!product) return;
-        if (!cart[productId]) {
-            cart[productId] = { product, qty: 1 };
-        } else {
-            cart[productId].qty += 1;
-        }
-        updateCartUI();
-    };
-
-    cartItemsContainer.addEventListener("click", (e) => {
-        const itemEl = e.target.closest(".cart-item");
-        if (!itemEl) return;
-        const id = itemEl.dataset.cartId;
-        if (e.target.classList.contains("cart-item-remove")) {
-            delete cart[id];
-            updateCartUI();
-            return;
-        }
-        if (e.target.classList.contains("qty-btn")) {
-            const action = e.target.dataset.action;
-            if (!cart[id]) return;
-
-            if (action === "inc") {
-                cart[id].qty += 1;
-            } else if (action === "dec") {
-                cart[id].qty -= 1;
-                if (cart[id].qty <= 0) {
-                    delete cart[id];
-                }
-            }
-            updateCartUI();
-        }
-    });
-
-    document.getElementById("cart-toggle").addEventListener("click", () => {
-        cartPanelBackdrop.classList.add("visible");
-        cartPanel.classList.add("visible");
-        cartPanelBackdrop.setAttribute("aria-hidden", "false");
-    });
-
-    document.getElementById("cart-close").addEventListener("click", () => {
-        cartPanelBackdrop.classList.remove("visible");
-        cartPanel.classList.remove("visible");
-        cartPanelBackdrop.setAttribute("aria-hidden", "true");
-    });
-
-    cartPanelBackdrop.addEventListener("click", (e) => {
-        if (e.target === cartPanelBackdrop) {
-            cartPanelBackdrop.classList.remove("visible");
-            cartPanel.classList.remove("visible");
-            cartPanelBackdrop.setAttribute("aria-hidden", "true");
-        }
-    });
-
-    // --- Quick view modal ---
-    const openQuickView = (product) => {
-        currentQuickViewProduct = product;
-        modalTitleEl.textContent = product.name;
-        modalBrandEl.textContent = "Brand: " + product.brand;
-        modalWeightEl.textContent = product.weight ? "Weight: " + (product.weight === "light" ? "Light" : "Balanced") : "Weight: —";
-        modalGradeEl.textContent = "Grade: " + (product.range === "pro" ? "Pro" : product.range === "budget" ? "Club" : "Performance");
-        modalModeEl.textContent = "Mode: " + (product.mode === "online-offline" ? "Online + Offline" : product.mode === "online" ? "Online only" : "Offline only");
-        modalPriceEl.textContent = formatCurrency(product.price);
-        modalOldPriceEl.textContent = "₹" + formatCurrency(product.oldPrice || product.price);
-        modalDiscountEl.textContent = (product.discount || 0) + "%";
-        modalDescEl.textContent =
-            product.type === "kit"
-                ? "Complete cricket kit designed to balance protection, mobility and value, curated with TACSPORTS trusted brands."
-                : "Premium English willow cricket bat, tuned at TACSPORTS for a forgiving yet explosive sweet spot and lighter pick-up.";
-        modalBackdrop.classList.add("visible");
-        modalEl.classList.add("visible");
-        modalBackdrop.setAttribute("aria-hidden", "false");
-    };
-
-    const closeQuickView = () => {
-        modalBackdrop.classList.remove("visible");
-        modalEl.classList.remove("visible");
-        modalBackdrop.setAttribute("aria-hidden", "true");
-    };
-
-    document.getElementById("modal-close").addEventListener("click", closeQuickView);
-    modalBackdrop.addEventListener("click", (e) => {
-        if (e.target === modalBackdrop) {
-            closeQuickView();
-        }
-    });
-
-    document.getElementById("modal-add-cart").addEventListener("click", () => {
-        if (currentQuickViewProduct) {
-            addToCart(currentQuickViewProduct.id);
-        }
-        closeQuickView();
-    });
-
-    // Quick view: jump to offline section for store info
-    document.getElementById("modal-store").addEventListener("click", () => {
-        const offlineSection = document.getElementById("offline");
-        if (offlineSection) {
-            const rect = offlineSection.getBoundingClientRect();
-            window.scrollTo({ top: rect.top + window.scrollY - 80, behavior: "smooth" });
-        }
-        closeQuickView();
-    });
-
-    // Bind product actions (quick view/add cart) after rendering
-    const bindProductActions = () => {
-        document.querySelectorAll(".product-card").forEach((card) => {
-            const productId = card.dataset.productId;
-            const quickViewBtn = card.querySelector(".quick-view-btn");
-            const addCartBtn = card.querySelector(".btn-add-cart");
-            quickViewBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                const product = products.find((p) => p.id === productId);
-                if (product) openQuickView(product);
-            });
-            addCartBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                addToCart(productId);
-            });
-            card.addEventListener("click", () => {
-                const product = products.find((p) => p.id === productId);
-                if (product) openQuickView(product);
-            });
-        });
-        document.querySelectorAll(".kit-card").forEach((card) => {
-            const productId = card.dataset.productId;
-            card.addEventListener("click", (e) => {
-                if (e.target.matches("input[type='checkbox']")) return;
-                const product = products.find((p) => p.id === productId);
-                if (product) openQuickView(product);
-            });
-        });
-    };
-
-    // --- Countdown timer ---
-    const initCountdown = () => {
-        const now = Date.now();
-        const future = now + 2 * 60 * 60 * 1000 + 15 * 60 * 1000 + 49 * 1000;
-        const update = () => {
-            const remaining = future - Date.now();
-            const hoursEl = document.getElementById("cd-hours");
-            const minsEl = document.getElementById("cd-mins");
-            const secsEl = document.getElementById("cd-secs");
-            if (remaining <= 0) {
-                hoursEl.textContent = "00";
-                minsEl.textContent = "00";
-                secsEl.textContent = "00";
-                return;
-            }
-            const hours = Math.floor(remaining / (1000 * 60 * 60));
-            const mins = Math.floor((remaining / (1000 * 60)) % 60);
-            const secs = Math.floor((remaining / 1000) % 60);
-            hoursEl.textContent = String(hours).padStart(2, "0");
-            minsEl.textContent = String(mins).padStart(2, "0");
-            secsEl.textContent = String(secs).padStart(2, "0");
-        };
-        update();
-        setInterval(update, 1000);
-    };
-
-    // Copy coupon
-    document.getElementById("coupon-apply").addEventListener("click", () => {
-        const code = document.getElementById("coupon-code").textContent.trim();
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(code).catch(() => {});
-        }
-        const btn = document.getElementById("coupon-apply");
-        const original = btn.textContent;
-        btn.textContent = "Copied";
-        setTimeout(() => (btn.textContent = original), 1200);
-    });
-
-    // --- Background particles ---
-    const initParticles = () => {
-        const canvas = document.getElementById("bg-particles");
-        const ctx = canvas.getContext("2d");
-        let width = (canvas.width = window.innerWidth * window.devicePixelRatio);
-        let height = (canvas.height = window.innerHeight * window.devicePixelRatio);
-        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-
-        const PARTICLE_COUNT = 40;
-        const particles = [];
-
-        const spawnParticle = () => {
-            return {
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                vx: (Math.random() - 0.5) * 0.2,
-                vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 2 + 0.5,
-                alpha: Math.random() * 0.7 + 0.2,
-            };
-        };
-
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-            particles.push(spawnParticle());
-        }
-
-        const draw = () => {
-            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            ctx.fillStyle = "rgba(56, 189, 248, 0.6)";
-            particles.forEach((p) => {
-                p.x += p.vx;
-                p.y += p.vy + 0.02;
-
-                if (p.x < -20 || p.x > window.innerWidth + 20 || p.y < -20 || p.y > window.innerHeight + 20) {
-                    const idx = particles.indexOf(p);
-                    particles[idx] = spawnParticle();
-                }
-                ctx.globalAlpha = p.alpha;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            ctx.globalAlpha = 1;
-            requestAnimationFrame(draw);
-        };
-        draw();
-
-        window.addEventListener("resize", () => {
-            width = canvas.width = window.innerWidth * window.devicePixelRatio;
-            height = canvas.height = window.innerHeight * window.devicePixelRatio;
-            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-        });
-    };
-
-    // --- Fade-in on scroll / parallax-lite ---
-    const initScrollReveal = () => {
-        const sections = document.querySelectorAll(".fade-section");
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("visible");
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            { threshold: 0.18 }
-        );
-        sections.forEach((section) => observer.observe(section));
-
-        const hero = document.querySelector(".hero-main-card");
-        window.addEventListener("scroll", () => {
-            const scrollY = window.scrollY || window.pageYOffset;
-            const offset = Math.min(scrollY / 18, 18);
-            hero.style.transform = "translateY(" + offset * -0.4 + "px)";
-        });
-    };
-
-    // --- Categories mega menu behaviour (desktop hover, mobile click) ---
-    const initMegaMenu = () => {
-        const categoriesBtn = document.querySelector('.nav-btn[data-nav-target="categories"]');
-        const mega = document.getElementById("categories-mega");
-        if (!categoriesBtn || !mega) return;
-
-        let hideTimeout;
-        const show = () => {
-            clearTimeout(hideTimeout);
-            mega.classList.add("visible");
-        };
-        const hide = () => {
-            hideTimeout = setTimeout(() => mega.classList.remove("visible"), 120);
-        };
-
-        categoriesBtn.addEventListener("mouseenter", () => {
-            if (window.innerWidth >= 768) show();
-        });
-        categoriesBtn.addEventListener("mouseleave", () => {
-            if (window.innerWidth >= 768) hide();
-        });
-        mega.addEventListener("mouseenter", show);
-        mega.addEventListener("mouseleave", hide);
-
-        // On smaller screens, toggle on tap instead of hover
-        categoriesBtn.addEventListener("click", (e) => {
-            if (window.innerWidth < 768) {
-                e.preventDefault();
-                mega.classList.toggle("visible");
-            }
-        });
-    };
-
-    // --- Initialization ---
-    document.addEventListener("DOMContentLoaded", () => {
-        renderCricketBats();
-        renderKits();
-        renderBrands();
-        bindProductActions();
-        initRippleButtons();
-        initCountdown();
-        initParticles();
-        initScrollReveal();
-        initMegaMenu();
-        document.getElementById("year").textContent = new Date().getFullYear();
-    });
-</script>
+    // Countdown timers
+    function startTimer(el, minutes) {
+      let end = Date.now() + minutes * 60 * 1000;
+      const tick = () => {
+        const diff = end - Date.now();
+        if (diff <= 0) return el.innerHTML = "<span class='time-chip'>Expired</span>";
+        const m = String(Math.floor(diff / 60000)).padStart(2,'0');
+        const s = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+        el.innerHTML = "<span class='time-chip'>" + m + "m</span><span class='time-chip'>" + s + "s</span>";
+        requestAnimationFrame(tick);
+      };
+      tick();
+    }
+    startTimer(document.getElementById('timer1'), 28);
+    startTimer(document.getElementById('timer2'), 35);
+    startTimer(document.getElementById('timer3'), 42);
+  </script>
 </body>
 </html>
